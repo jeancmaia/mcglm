@@ -578,45 +578,45 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 class MCGLMParameters:
     @staticmethod
     def parameters_attributes(
-        residue,
-        mu_derivative,
+        resid,
+        mu_deriv,
         W,
         quasi_score,
-        mean_sensitivity,
-        mean_variability,
-        c_inverse,
-        c_values,
-        c_derivatives_componentes,
-        var_sensitivity,
+        mean_sens,
+        mean_varia,
+        c_inv,
+        c,
+        c_deriv,
+        var_sensi,
     ):
         """The parameters of MCGLM converge assymtoptically to a Normal Distribution. This trait allows some statistical inferences as hypothesis testing, confidence interval and so on. This method crafts three important matrices: Varcov: variance covariance matrix, joint_inv_sensitivity: inverse sensitivity, and joint_variability: the joint variability distribution."""
 
         variance_variability = MCGLMParameters.generate_var_variability(
-            residue, W, c_inverse, c_values, c_derivatives_componentes
+            resid, W, c_inv, c, c_deriv
         )
 
-        inv_cw = np.dot(c_inverse, W)
+        inv_cw = np.dot(c_inv, W)
 
         s_cov_beta = MCGLMParameters.mc_cross_sensitivity(
-            cov_product=c_derivatives_componentes,
+            cov_product=c_deriv,
             columns_size=len(quasi_score),
         )
 
         v_cov_beta = MCGLMParameters.mc_cross_variability(
-            cov_product=c_derivatives_componentes,
+            cov_product=c_deriv,
             inv_cw=inv_cw,
-            res=residue,
-            d=mu_derivative,
+            res=resid,
+            d=mu_deriv,
         )
 
-        p1 = np.append(mean_variability, v_cov_beta.transpose(), axis=0)
+        p1 = np.append(mean_varia, v_cov_beta.transpose(), axis=0)
 
         p2 = np.append(v_cov_beta, variance_variability, axis=0)
         joint_variability = np.append(p1, p2, axis=1)
 
-        inv_J_beta = inv(mean_sensitivity)
+        inv_J_beta = inv(mean_sens)
         inv_S_beta = inv_J_beta
-        inv_S_cov = inv(var_sensitivity)
+        inv_S_cov = inv(var_sensi)
         mat0 = np.zeros((s_cov_beta.shape[1], s_cov_beta.shape[0]))
 
         cross_term = mc_sandwich(s_cov_beta, -inv_S_cov, inv_S_beta)

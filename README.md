@@ -1,4 +1,6 @@
-### Multivariate Covariance Generalized Linear Models.
+### Multivariate Covariance Generalized Linear Models
+
+https://pypi.org/project/mcglm/
 
 The mcglm package brings to python language one of the most powerful extensions to GLMs(Nelder, Wedderburn; 1972), the Multivariate Covariance Generalized Linear Models(Bonat, Jørgensen; 2016).
 

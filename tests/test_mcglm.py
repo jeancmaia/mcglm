@@ -1,14 +1,13 @@
-
 import pytest
 import numpy as np
 import pandas as pd
 
 from mcglm import __version__
 from mcglm import MCGLM, MCGLMCAttributes, MCGLMMean, MCGLMVariance
-from mcglm import mc_id, mc_ma, mc_mixed
+
 
 def test_version():
-    assert __version__ == '0.1.0'
+    assert __version__ == "0.1.0"
 
 
 TEST_X = np.array(
@@ -39,7 +38,9 @@ def test_an_invalid_link_function(mcglmmean):
 
 
 def test_identity_link_function(mcglmmean):
-    link = mcglmmean._link_function_attributes(link="identity", beta=TEST_BETA, X=TEST_X)
+    link = mcglmmean._link_function_attributes(
+        link="identity", beta=TEST_BETA, X=TEST_X
+    )
 
     assert np.array_equal(
         link.get("mu"), np.array([3, 5, 7, 9, 11, 13, 15, 17, 19, 21])
@@ -408,13 +409,9 @@ def test_mc_build_sigma__constant(mcglmvattributes):
     mcglmvattributes._z = [TEST_Z]
     mcglmvattributes._n_targets = 1
     omega = mcglmvattributes._generate_omega(tau=[TEST_TAU])
-    
+
     sigma = mcglmvattributes._calculate_sigma(
-        mu=np.array([1, 0.8]),
-        power=2,
-        omega=omega[0],
-        variance="constant",
-        Ntrial=1
+        mu=np.array([1, 0.8]), power=2, omega=omega[0], variance="constant", Ntrial=1
     )
     np.testing.assert_almost_equal(
         sigma.get("sigma_chol"),
@@ -455,11 +452,7 @@ def test_mc_build_sigma__tweedie_and_fixed_true(mcglmmean, mcglmvattributes):
     omega = mcglmvattributes._generate_omega(tau=[TEST_TAU])
 
     sigma = mcglmvattributes._calculate_sigma(
-        mu=list_mu[0],
-        power=2,
-        omega=omega[0],
-        variance="tweedie",
-        Ntrial=[1]
+        mu=list_mu[0], power=2, omega=omega[0], variance="tweedie", Ntrial=[1]
     )
     np.testing.assert_almost_equal(
         sigma.get("sigma_chol"),
@@ -490,7 +483,13 @@ def test_mc_build_sigma__tweedie_and_fixed_true(mcglmmean, mcglmvattributes):
     )
 
     sigma_derivatives = mcglmvattributes._calculate_sigma_derivatives(
-        mu=list_mu[0], power=2, variance="tweedie", z=TEST_Z, power_fixed=True, Ntrial=[1], omegas=omega
+        mu=list_mu[0],
+        power=2,
+        variance="tweedie",
+        z=TEST_Z,
+        power_fixed=True,
+        Ntrial=[1],
+        omegas=omega,
     )
     np.testing.assert_almost_equal(
         sigma_derivatives.get("sigma_derivative")[0],
@@ -521,7 +520,13 @@ def test_mc_build_sigma__tweedie_and_fixed_true(mcglmmean, mcglmvattributes):
     )
 
     sigma_derivatives = mcglmvattributes._calculate_sigma_derivatives(
-        mu=list_mu[0], power=1, variance="tweedie", z=TEST_Z, power_fixed=False, Ntrial=[1], omegas=omega
+        mu=list_mu[0],
+        power=1,
+        variance="tweedie",
+        z=TEST_Z,
+        power_fixed=False,
+        Ntrial=[1],
+        omegas=omega,
     )
     np.testing.assert_almost_equal(
         sigma_derivatives.get("sigma_derivative")[0][0],
@@ -531,7 +536,7 @@ def test_mc_build_sigma__tweedie_and_fixed_true(mcglmmean, mcglmvattributes):
                 [0.9341, 2.857, 1.6792, 2.174, 2.772],
                 [1.2702, 1.679, 4.8929, 2.772, 3.490],
                 [1.6792, 2.174, 2.7721, 7.853, 4.350],
-                [2.1746, 2.772, 3.4903, 4.350, 12.100]
+                [2.1746, 2.772, 3.4903, 4.350, 12.100],
             ]
         ),
         decimal=3,
@@ -544,12 +549,11 @@ def test_mc_build_sigma__tweedie_and_fixed_true(mcglmmean, mcglmvattributes):
                 [1.8682, 2.1170, 2.3988, 2.7182, 3.0802],
                 [2.1170, 2.3988, 2.7182, 3.0802, 3.4903],
                 [2.3988, 2.7182, 3.0802, 3.4903, 3.9550],
-                [2.7182, 3.0802, 3.4903, 3.9550, 4.4816]
+                [2.7182, 3.0802, 3.4903, 3.9550, 4.4816],
             ]
         ),
         decimal=3,
     )
-
 
 
 def test_apply_build_sigma_on_list(mcglmmean, mcglmvattributes):
@@ -558,7 +562,7 @@ def test_apply_build_sigma_on_list(mcglmmean, mcglmvattributes):
         link=["log", "log"],
         beta=[[3, 2.5], [0.2, 1.1]],
         X=[TEST_VARIANCE_X, TEST_VARIANCE_X],
-        offset=[None, None]
+        offset=[None, None],
     )
 
     mcglmvattributes._z = [TEST_Z, TEST_Z]
@@ -566,26 +570,22 @@ def test_apply_build_sigma_on_list(mcglmmean, mcglmvattributes):
     mcglmvattributes._n_obs = 5
     mcglmvattributes._ntrial = [None, None]
     mcglmvattributes._variance = ["constant", "constant"]
-    
-    
-    
-    ( diagonal_matrix,
-    omega,
-    sigma_raw,
-    sigma_chol,
-    sigma_chol_inv,
-    sigma_between,
-    sigma_between_derivative,
-    sigma_chol_block_matrix,
-    sigma_chol_inv_block_matrix,
-    c_inverse) = mcglmvattributes.c_inverse(
-        mu=list_mu,
-        power=[3, 2],
-        rho=2,
-        tau=[[1, 0.8], [2, 1.8]],
-        full_response=True
+
+    (
+        diagonal_matrix,
+        omega,
+        sigma_raw,
+        sigma_chol,
+        sigma_chol_inv,
+        sigma_between,
+        sigma_between_derivative,
+        sigma_chol_block_matrix,
+        sigma_chol_inv_block_matrix,
+        c_inverse,
+    ) = mcglmvattributes.c_inverse(
+        mu=list_mu, power=[3, 2], rho=2, tau=[[1, 0.8], [2, 1.8]], full_response=True
     )
-    
+
     np.testing.assert_almost_equal(
         sigma_chol[0],
         np.array(
@@ -933,15 +933,16 @@ def test_mc_build_sigma_between(mcglmvattributes):
         decimal=5,
     )
 
+
 def test_mc_build_c_beta_and_c_equal_tofalse(mcglmmean, mcglmvattributes):
-    
+
     list_mu, mu, d = mcglmmean.calculate_mean_features(
         link=["log", "log"],
         beta=[[3, 2.5], [0.2, 1.1]],
         X=[TEST_VARIANCE_X, TEST_VARIANCE_X],
-        offset=[None, None]
+        offset=[None, None],
     )
-    
+
     mcglmvattributes._z = [TEST_Z, TEST_Z]
     mcglmvattributes._n_targets = 2
     mcglmvattributes._n_obs = 5
@@ -950,12 +951,9 @@ def test_mc_build_c_beta_and_c_equal_tofalse(mcglmmean, mcglmvattributes):
     mcglmvattributes._power_fixed = [False, True]
 
     # mu, power, rho, tau
-    
+
     c_inverse, c_derivatives, c_values = mcglmvattributes.c_complete(
-        mu=mu,
-        power=[3, 2],
-        rho=2,
-        tau=[[1, 0.8], [2, 1.8]]
+        mu=mu, power=[3, 2], rho=2, tau=[[1, 0.8], [2, 1.8]]
     )
 
     np.testing.assert_almost_equal(
@@ -1173,9 +1171,9 @@ def test_mc_quasi_score(mcglmmean):
     Z0 = diagonal(15, X[:, 0].copy())
     Z1 = np.ones((15, 15))
     Z = [Z0, Z1]
-    
+
     W = diagonal(15, X[:, 0].copy())
-    
+
     mcglmmean._z = [Z]
     mcglmmean._n_targets = 1
     mcglmmean._n_obs = 15
@@ -1185,16 +1183,11 @@ def test_mc_quasi_score(mcglmmean):
     mcglmmean._offset = [None]
     mcglmmean._X = [X]
     mcglmmean._y_values = y
-    mcglmmean._y_names = ['output']
-
+    mcglmmean._y_names = ["output"]
 
     # beta, W, power, rho, tau
     (new_beta, score, sensitivity, variability) = mcglmmean.update_beta(
-        beta=[[0.8, 0.05, 0]],
-        W=W,
-        power=[3],
-        rho=1,
-        tau=[[1, 5]]
+        beta=[[0.8, 0.05, 0]], W=W, power=[3], rho=1, tau=[[1, 5]]
     )
 
     np.testing.assert_almost_equal(
@@ -1207,9 +1200,9 @@ def test_mc_quasi_score(mcglmmean):
         sensitivity,
         np.array(
             [
-                [-2.80369448e+00, -3.72056908e+01, -3.05450823e+02],
-                [-3.72056908e+01, -7.52022067e+02, -4.95743291e+03],
-                [-3.05450823e+02, -4.95743291e+03, -3.64416916e+04]
+                [-2.80369448e00, -3.72056908e01, -3.05450823e02],
+                [-3.72056908e01, -7.52022067e02, -4.95743291e03],
+                [-3.05450823e02, -4.95743291e03, -3.64416916e04],
             ]
         ),
         decimal=0,
@@ -1219,9 +1212,9 @@ def test_mc_quasi_score(mcglmmean):
         variability,
         np.array(
             [
-                [2.80369448e+00, 3.72056908e+01, 3.05450823e+02],
-                [3.72056908e+01, 7.52022067e+02, 4.95743291e+03],
-                [3.05450823e+02, 4.95743291e+03, 3.64416916e+04]
+                [2.80369448e00, 3.72056908e01, 3.05450823e02],
+                [3.72056908e01, 7.52022067e02, 4.95743291e03],
+                [3.05450823e02, 4.95743291e03, 3.64416916e04],
             ]
         ),
         decimal=1,
@@ -1244,7 +1237,7 @@ def test_mc_pearson(mcglmmean, mcglmvariance):
     Z = [Z0, Z1]
 
     W = diagonal(15, X[:, 0].copy())
-    
+
     mcglmmean._z = [Z]
     mcglmmean._n_targets = 1
     mcglmmean._n_obs = 15
@@ -1254,13 +1247,12 @@ def test_mc_pearson(mcglmmean, mcglmvariance):
     mcglmmean._offset = [None]
     mcglmmean._X = [X]
     mcglmmean._y_values = y
-    mcglmmean._y_names = ['output']
-
+    mcglmmean._y_names = ["output"]
 
     mu_attributes_per_response, mu, _ = mcglmmean.calculate_mean_features(
         link=["log"], beta=[[0, 1, 0]], X=[X], offset=[None]
     )
-    
+
     mcglmvariance._z = [Z]
     mcglmvariance._n_targets = 1
     mcglmvariance._n_obs = 15
@@ -1270,22 +1262,24 @@ def test_mc_pearson(mcglmmean, mcglmvariance):
     mcglmvariance._offset = [None]
     mcglmvariance._X = [X]
     mcglmvariance._y_values = y
-    mcglmvariance._y_names = ['output']
+    mcglmvariance._y_names = ["output"]
     mcglmvariance._power_fixed = [True]
-    mcglmvariance._tuning=0.5
-    
-    (new_dispersion,
-    c_inverse,
-    c_values,
-    c_derivatives_componentes,
-    var_sensitivity) = mcglmvariance.update_covariates(
+    mcglmvariance._tuning = 0.5
+
+    (
+        new_dispersion,
+        c_inverse,
+        c_values,
+        c_derivatives_componentes,
+        var_sensitivity,
+    ) = mcglmvariance.update_covariates(
         mu_attributes=mu_attributes_per_response,
         rho=1,
         power=[3],
         tau=[[1, 5]],
         W=W,
         dispersion=[0, 0],
-        mu=mu
+        mu=mu,
     )
 
     np.testing.assert_almost_equal(
@@ -1853,7 +1847,7 @@ def test_fit_mcglm__link_tweedie_and_power_fixed__one_variable():
         link=list_link,
         variance=list_variance,
         power_fixed=list_power_fixed,
-        tuning=1
+        tuning=1,
     )
 
     (
@@ -1872,10 +1866,9 @@ def test_fit_mcglm__link_tweedie_and_power_fixed__one_variable():
         c_inverse,
         c_values,
     ) = mdl._fit()
-    #print(regression_historical[-1])
+    # print(regression_historical[-1])
     np.testing.assert_almost_equal(
-        regression_historical[-1], np.array([[4.97, 1.93, -1.12]]),
-        decimal=2
+        regression_historical[-1], np.array([[4.97, 1.93, -1.12]]), decimal=2
     )
     np.testing.assert_almost_equal(
         dispersion_historical[-1],
@@ -1916,7 +1909,7 @@ def test_fit_mcglm__link_tweedie_and_power_fixed__two_variable():
         variance=list_variance,
         power_fixed=list_power_fixed,
         ntrial=list_Ntrial,
-        tuning=1
+        tuning=1,
     )
     (
         regression_historical,
@@ -1947,8 +1940,8 @@ def test_fit_mcglm__link_tweedie_and_power_fixed__two_variable():
         np.array([-6.95361666e-02, 2.5610173e02, 1.07966296e00]),
         decimal=1,
     )
-    
-    #mdl_report.summary()
+
+    # mdl_report.summary()
 
 
 def test_fit_mcglm__simulation_two_labels():
@@ -1972,12 +1965,11 @@ def test_fit_mcglm__simulation_two_labels():
     list_link = ["log", "log"]
     list_Z = [[diagonal(9, np.ones(9))], [diagonal(9, np.ones(9))]]
     list_X = [X1, X2]
-    list_Y = [Y1['lot1'], Y2['lot2']]
+    list_Y = [Y1["lot1"], Y2["lot2"]]
     list_variance = ["tweedie", "tweedie"]
     list_power_fixed = [True, True]
     list_Ntrial = [None, None]
 
-   
     mdl = MCGLM(
         endog=list_Y,
         exog=list_X,
@@ -1987,7 +1979,7 @@ def test_fit_mcglm__simulation_two_labels():
         power_fixed=list_power_fixed,
         ntrial=list_Ntrial,
         tuning=0.5,
-        tol=0.001
+        tol=0.001,
     )
     (
         regression_historical,
@@ -2021,13 +2013,13 @@ def test_fit_mcglm__simulation_two_labels():
         np.array([0.98070244, 0.799, 0.464]),
         decimal=1,
     )
-    
+
     mdlreport = mdl.fit()
     mdlreport.summary()
 
 
 def test_fit_mcglm__simulation_two_labels_binomial():
-    
+
     import patsy
 
     u = np.array([5, 10, 15, 20, 30, 40, 60, 80, 100])
@@ -2036,24 +2028,26 @@ def test_fit_mcglm__simulation_two_labels_binomial():
 
     data = pd.DataFrame([], columns=["u", "lot1", "lot2"])
     data["u"] = u
-    data["lot1"] = lot1/118
-    data["lot2"] = lot2/69
+    data["lot1"] = lot1 / 118
+    data["lot2"] = lot2 / 69
 
     data["log_u"] = np.log(data["u"])
 
     Y1, X1 = patsy.dmatrices("lot1 ~ log_u", data, return_type="dataframe")
     Y2, X2 = patsy.dmatrices("lot2 ~ log_u", data, return_type="dataframe")
-    
 
     list_link = ["probit", "loglog", "logit"]
-    list_Z = [[diagonal(9, np.ones(9))], [diagonal(9, np.ones(9))], [diagonal(9, np.ones(9))]]
+    list_Z = [
+        [diagonal(9, np.ones(9))],
+        [diagonal(9, np.ones(9))],
+        [diagonal(9, np.ones(9))],
+    ]
     list_X = [X1, X2, X1]
-    list_Y = [Y1['lot1'], Y2['lot2'], Y1['lot1']]
+    list_Y = [Y1["lot1"], Y2["lot2"], Y1["lot1"]]
     list_variance = ["binomialP", "binomialP", "binomialPQ"]
     list_power_fixed = [True, True, True]
     list_Ntrial = [1, 1, 1]
 
-   
     mdl = MCGLM(
         endog=list_Y,
         exog=list_X,
@@ -2063,25 +2057,24 @@ def test_fit_mcglm__simulation_two_labels_binomial():
         power_fixed=list_power_fixed,
         ntrial=list_Ntrial,
         tuning=1,
-        tol=0.001
+        tol=0.001,
     )
     (
-            regression_historical,
-            dispersion_historical,
-            residue,
-            varcov,
-            joint_inv_sensitivity,
-            joint_variability,
-            n_iter,
-            mu,
-            rho,
-            tau,
-            power,
-            parameters_target,
-            c_inverse,
-            c_values,
+        regression_historical,
+        dispersion_historical,
+        residue,
+        varcov,
+        joint_inv_sensitivity,
+        joint_variability,
+        n_iter,
+        mu,
+        rho,
+        tau,
+        power,
+        parameters_target,
+        c_inverse,
+        c_values,
     ) = mdl._fit()
-
 
     np.testing.assert_almost_equal(
         regression_historical[-1],
@@ -2096,7 +2089,8 @@ def test_fit_mcglm__simulation_two_labels_binomial():
     )
     np.testing.assert_almost_equal(
         np.array(dispersion_historical[-1]),
-        np.array([0.99947835, 0.99999981, 0.99947562, 0.2262965, 0.20997098, 0.22344229]),
+        np.array(
+            [0.99947835, 0.99999981, 0.99947562, 0.2262965, 0.20997098, 0.22344229]
+        ),
         decimal=2,
     )
-    

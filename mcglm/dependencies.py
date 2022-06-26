@@ -59,25 +59,39 @@ def mc_mixed(data=None, formula=None):
     """
     mc_mixed retrieves the components for matrix linear predictor associated with mixed models.
     """
-    design_matrix = dmatrix(formula, data=data, return_type="dataframe").values
+    design_matrix = dmatrix(formula, data=data, return_type="dataframe")
+    val_columns = design_matrix.columns.tolist()
 
-    positions = list(range(design_matrix.shape[1]))
-    size = design_matrix.shape[0]
+    # Find two-points
+    positions = list()
+    for column in val_columns:
+        if ':' in column:
+            positions.append(1)
+        else:
+            positions.append(0)
+    positions = np.array(positions)
+    
+    design_matrix = design_matrix.values
+
+    all_indexes = [(i, i) for i in set(positions)]
+    
+    if len(all_indexes) > 1:
+        all_indexes = all_indexes + list(
+            itertools.combinations(list(range(2)), 2)
+        )
 
     matrices = list()
-
-    all_indexes = [(i, i) for i in positions] + list(combinations(list(range(2)), 2))
-
     for tc in all_indexes:
-
-        matrix1 = np.repeat(design_matrix[:, tc[0]], size, axis=0).reshape(size, size).T
-        matrix2 = np.repeat(design_matrix[:, tc[1]], size, axis=0).reshape(size, size).T
+        #matrix1 = np.repeat(design_matrix[:, tc[0]], size, axis=0).reshape(size, size).T
+        #matrix2 = np.repeat(design_matrix[:, tc[1]], size, axis=0).reshape(size, size).T
+        matrix1 = design_matrix[:, np.where(positions == tc[0])[0] ]
+        matrix2 = design_matrix[:, np.where(positions == tc[1])[0] ]      
 
         if tc[0] == tc[1]:
-            matrices.append(np.multiply(matrix1, matrix2.T))
+            matrices.append(np.matmul(matrix1, matrix2.T))
         else:
             matrices.append(
-                np.multiply(matrix1, matrix2.T) + np.multiply(matrix2, matrix1.T)
+                np.matmul(matrix1, matrix2.T) + np.matmul(matrix2, matrix1.T)
             )
 
     return matrices

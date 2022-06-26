@@ -112,7 +112,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
     @property
     def df_model(self):
-        return len(self._beta_initial[0]) - 1
+        return len(self._beta_initial[0]) + len(self._tau_initial[0])
 
     @property
     def df_resid(self):
@@ -271,7 +271,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             bic=bic,
             df_resid=self.df_resid,
             df_model=self.df_model,
-            mu=mu,
+            mu=mu.reshape(self._n_targets, -1),
             y_values=self._y_values,
             X=self._X,
             ntrial=self._ntrial,
@@ -281,22 +281,21 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         """
         Gaussian Pseudo-loglikelihood
         """
-
         def gauss(residue, det_sigma, inv_sigma):
             import math
 
             size_residue = len(residue)
             dens = (
-                (-size_residue / 2) * np.log(2 * math.pi)
+                -1 * (size_residue / 2) * np.log(2 * math.pi)
                 - 0.5 * det_sigma
-                - 0.5 * (residue.T * inv_sigma * residue)
+                - (residue.T * inv_sigma * residue)
             )
             return dens.mean()
 
         residue = endog - mu
         det_sigma = slogdet(block_diag(c_values))[1]
         log_likelihood = gauss(
-            residue=residue, det_sigma=det_sigma, inv_sigma=block_diag(c_inverse)
+            residue=residue, det_sigma=det_sigma, inv_sigma=c_inverse
         )
 
         return log_likelihood
@@ -802,7 +801,7 @@ class MCGLMResults(GLMResults):
         if self.n_targets == 1:
             mu = [self.mu]
         else:
-            mu = self.mu
+            mu = self.mu.reshape(self.n_targets, -1)
 
         for index in range(self.n_targets):
             residue = (
@@ -906,7 +905,7 @@ class MCGLMResults(GLMResults):
             ("Power-fixed:", [self.power_fixed]),
             ("pAIC", [self.paic]),
             ("pBIC", [self.pbic]),
-            ("pLogLik", [self.p_log_likelihood]),
+            ("pLogLik", [round(self.p_log_likelihood, 4)]),
         ]
 
         if hasattr(self, "cov_type"):

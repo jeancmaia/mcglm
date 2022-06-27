@@ -378,7 +378,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             varcov,
             joint_inv_sensitivity,
             joint_variability,
-        ) = MCGLMParameters.parameters_attributes(
+        ) = MCGLMParameters._parameters_attributes(
             residue,
             mu_derivatives,
             W,
@@ -576,7 +576,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
 class MCGLMParameters:
     @staticmethod
-    def parameters_attributes(
+    def _parameters_attributes(
         resid,
         mu_deriv,
         W,
@@ -596,12 +596,12 @@ class MCGLMParameters:
 
         inv_cw = np.dot(c_inv, W)
 
-        s_cov_beta = MCGLMParameters.mc_cross_sensitivity(
+        s_cov_beta = MCGLMParameters._mc_cross_sensitivity(
             cov_product=c_deriv,
             columns_size=len(quasi_score),
         )
 
-        v_cov_beta = MCGLMParameters.mc_cross_variability(
+        v_cov_beta = MCGLMParameters._mc_cross_variability(
             cov_product=c_deriv,
             inv_cw=inv_cw,
             res=resid,
@@ -635,23 +635,23 @@ class MCGLMParameters:
             joint_variability,
         )
 
-    def mc_cross_sensitivity(cov_product, columns_size):
+    def _mc_cross_sensitivity(cov_product, columns_size):
         nrow = len(cov_product)
         return np.zeros((nrow, columns_size))
 
     def generate_var_variability(
-        residue, w, c_inverse, c_values, c_derivatives_componentes
+        res, w, c_inv, c_val, c_comp
     ):
 
-        return MCGLMParameters.calculate_variability(
-            product=c_derivatives_componentes,
-            inv_C=c_inverse,
-            C=c_values,
-            res=residue,
+        return MCGLMParameters._calculate_variability(
+            product=c_comp,
+            inv_C=c_inv,
+            C=c_val,
+            res=res,
             W=w,
         )
 
-    def calculate_variability(product, inv_C, C, res, W):
+    def _calculate_variability(product, inv_C, C, res, W):
         n_par = len(product)
         we = [np.dot(product[index], inv_C) for index in range(n_par)]
 
@@ -659,11 +659,11 @@ class MCGLMParameters:
         sensitivity = MCGLMVariance.generate_sensitivity(product, W=W**2)
         W = np.diag(W).flatten()
 
-        variability = MCGLMParameters.mc_variability(sensitivity, we, k4, W)
+        variability = MCGLMParameters._mc_variability(sensitivity, we, k4, W)
 
         return variability
 
-    def mc_variability(sensitivity, we, k4, w):
+    def _mc_variability(sensitivity, we, k4, w):
         variability = np.array([])
         for position_row in range(len(we)):
             wi = np.diag(we[position_row])
@@ -679,13 +679,13 @@ class MCGLMParameters:
 
         return variability.reshape((len(we), len(we)))
 
-    def covprod(a, w, res):
+    def _covprod(a, w, res):
         calculation_sandwich = np.dot(np.dot(res, w), res)
         calculation_residue = np.dot(res.transpose(), a)
         product = np.dot(calculation_sandwich, calculation_residue)
         return product
 
-    def mc_cross_variability(cov_product, inv_cw, res, d):
+    def _mc_cross_variability(cov_product, inv_cw, res, d):
 
         wlist = [np.dot(cov, inv_cw) for cov in cov_product]
         a = np.dot(d.transpose(), inv_cw)
@@ -696,7 +696,7 @@ class MCGLMParameters:
         for cov in range(n_cov):
             for beta in range(n_beta):
                 cross_variability.append(
-                    MCGLMParameters.covprod(a[beta, :], wlist[cov], res)
+                    MCGLMParameters._covprod(a[beta, :], wlist[cov], res)
                 )
         cross_variability = np.array(cross_variability).reshape(n_cov, n_beta).T
         return cross_variability
@@ -729,29 +729,29 @@ class MCGLMResults(GLMResults):
         X,
         ntrial,
     ):
-        self.normalized_var_cov = normalized_var_cov
-        self.nobs = nobs
-        self.n_targets = n_targets
-        self.y_names = y_names
-        self.regression = regression
-        self.dispersion = dispersion
-        self.n_iter = n_iter
-        self.residue = residue
-        self.rho = rho
-        self.tau = tau
-        self.power_list = power
-        self.link_list = link
-        self.variance_list = variance
-        self.power_fixed_list = power_fixed
-        self.p_log_likelihood = p_log_likelihood
-        self.p_aic = aic
-        self.p_bic = bic
-        self.df_resid = df_resid
-        self.df_model = df_model
-        self.mu_value = mu
-        self.y_values = y_values
-        self.X = X
-        self.ntrial = ntrial
+        self._normalized_var_cov = normalized_var_cov
+        self._nobs = nobs
+        self._n_targets  = n_targets
+        self._y_names = y_names
+        self._regression = regression
+        self._dispersion = dispersion
+        self._n_iter = n_iter
+        self._residue = residue
+        self._rho = rho
+        self._tau = tau
+        self._power_list = power
+        self._link_list = link
+        self._variance_list = variance
+        self._power_fixed_list = power_fixed
+        self._p_log_likelihood = p_log_likelihood
+        self._p_aic = aic
+        self._p_bic = bic
+        self._df_resid = df_resid
+        self._df_model = df_model
+        self._mu_value = mu
+        self._y_values = y_values
+        self._X = X
+        self._ntrial = ntrial
         self.params = None
 
         self._use_t = False
@@ -778,13 +778,13 @@ class MCGLMResults(GLMResults):
 
     @property
     def mu(self):
-        return self.mu_value
+        return self._mu_value
 
     @property
     def pvalues(self):
         """The two-tailed p values for the t-stats of the params."""
         if self.use_t:
-            df_resid = getattr(self, "df_resid_inference", self.df_resid)
+            df_resid = getattr(self, "df_resid_inference", self._df_resid)
             return stats.t.sf(np.abs(self.tvalues), df_resid) * 2
         else:
             return stats.norm.sf(np.abs(self.tvalues)) * 2
@@ -798,20 +798,20 @@ class MCGLMResults(GLMResults):
         statsmodels.families.varfuncs for more information.
         """
         residuals = []
-        if self.n_targets == 1:
+        if self._n_targets  == 1:
             mu = [self.mu]
         else:
-            mu = self.mu.reshape(self.n_targets, -1)
+            mu = self.mu.reshape(self._n_targets , -1)
 
-        for index in range(self.n_targets):
+        for index in range(self._n_targets ):
             residue = (
-                self.y_values[index * self.nobs : index * self.nobs + self.nobs]
+                self._y_values[index * self._nobs : index * self._nobs + self._nobs]
                 - mu[index]
             )
 
             variance = None
-            if self.variance_list[index] in ("binomialP", "binomialPQ"):
-                variance = self.variance_list[index]
+            if self._variance_list[index] in ("binomialP", "binomialPQ"):
+                variance = self._variance_list[index]
             else:
                 variance = "power"
 
@@ -820,8 +820,8 @@ class MCGLMResults(GLMResults):
                 ._generate_variance(
                     variance,
                     mu[index],
-                    self.power_list[index],
-                    self.ntrial[index],
+                    self._power_list[index],
+                    self._ntrial[index],
                 )
                 .get("variance_sqrt_output")
             )
@@ -841,7 +841,7 @@ class MCGLMResults(GLMResults):
         total_anovas = list()
         for position_target in range(self.model.n_targets):
             dispersion = self.model.dispersion[position_target]["scalelist"][1:].copy()
-            dispersion_vcov = self.dispersion_vcov[position_target][1:, 1:].copy()
+            dispersion_vcov = self._dispersion_vcov[position_target][1:, 1:].copy()
 
             covariates_positions = [
                 list(j) for i, j in groupby(indexes_covariates[position_target])
@@ -898,14 +898,14 @@ class MCGLMResults(GLMResults):
         ]
 
         top_right = [
-            ("No. Iterations:", [self.n_iter]),
-            ("No. Observations:", None),
-            ("Df Residuals:", None),
-            ("Df Model:", None),
+            ("No. Iterations:", [self._n_iter]),
+            ("No. Observations:", [self._nobs]),
+            ("Df Residuals:", [self._df_resid]),
+            ("Df Model:", [self._df_model]),
             ("Power-fixed:", [self.power_fixed]),
             ("pAIC", [self.paic]),
             ("pBIC", [self.pbic]),
-            ("pLogLik", [round(self.p_log_likelihood, 4)]),
+            ("pLogLik", [round(self._p_log_likelihood, 4)]),
         ]
 
         if hasattr(self, "cov_type"):
@@ -952,9 +952,9 @@ class MCGLMResults(GLMResults):
         return summ
 
     def __add_rho_section(self, summ, alpha=0.05):
-        self.normalized_cov_params = self.rho_vcov
-        self.params = np.array(self.rho) if isinstance(self.rho, int) else self.rho
-        if isinstance(self.rho, (np.ndarray, np.generic)):
+        self.normalized_cov_params = self._rho_vcov
+        self.params = np.array(self._rho) if isinstance(self._rho, int) else self._rho
+        if isinstance(self._rho, (np.ndarray, np.generic)):
             summ.add_table_params(
                 self,
                 alpha=alpha,
@@ -978,23 +978,23 @@ class MCGLMResults(GLMResults):
         """
         Summarize the Regression Results
         """
-        self.dispersion_vcov = []
+        self._dispersion_vcov = []
         self.betas_vcov = []
-        self.rho_vcov = []
+        self._rho_vcov = []
         self.power_vcov = []
 
         index_position = 0
-        cov_params = self.normalized_var_cov
+        cov_params = self._normalized_var_cov
 
-        if self.n_targets == 1:
-            self.rho_vcov = np.array([np.nan])
+        if self._n_targets  == 1:
+            self._rho_vcov = np.array([np.nan])
             mu = [self.mu]
         else:
             mu = self.mu
 
-        for index in range(self.n_targets):
+        for index in range(self._n_targets ):
 
-            n_betas = len(self.regression[index])
+            n_betas = len(self._regression[index])
             self.betas_vcov.append(
                 cov_params[
                     index_position : index_position + n_betas,
@@ -1003,17 +1003,17 @@ class MCGLMResults(GLMResults):
             )
             index_position += n_betas
 
-        if self.n_targets > 1:
-            self.rho_vcov = cov_params[
-                index_position : index_position + len(self.rho),
-                index_position : index_position + len(self.rho),
+        if self._n_targets  > 1:
+            self._rho_vcov = cov_params[
+                index_position : index_position + len(self._rho),
+                index_position : index_position + len(self._rho),
             ]
 
-            index_position += len(self.rho)
+            index_position += len(self._rho)
 
-        for index in range(self.n_targets):
+        for index in range(self._n_targets ):
 
-            if self.power_fixed_list[index]:
+            if self._power_fixed_list[index]:
                 self.power_vcov.append(np.array([np.nan]))
             else:
                 self.power_vcov.append(
@@ -1026,9 +1026,9 @@ class MCGLMResults(GLMResults):
                 )
                 index_position += 1
 
-            n_dispersion = len(self.dispersion[index]["scalelist"])
+            n_dispersion = len(self._dispersion[index]["scalelist"])
 
-            self.dispersion_vcov.append(
+            self._dispersion_vcov.append(
                 cov_params[
                     index_position : index_position + n_dispersion,
                     index_position : index_position + n_dispersion,
@@ -1041,27 +1041,27 @@ class MCGLMResults(GLMResults):
 
         smry = Summary()
 
-        for target_index in range(self.n_targets):
-            exog_names = self.X[target_index].columns.tolist()
-            y_name = self.y_names[target_index]
+        for target_index in range(self._n_targets ):
+            exog_names = self._X[target_index].columns.tolist()
+            y_name = self._y_names[target_index]
 
-            self.link = self.link_list[target_index]
-            self.variance = self.variance_list[target_index]
-            self.power_fixed = self.power_fixed_list[target_index]
-            self.params = self.regression[target_index]
+            self.link = self._link_list[target_index]
+            self.variance = self._variance_list[target_index]
+            self.power_fixed = self._power_fixed_list[target_index]
+            self.params = self._regression[target_index]
             self.normalized_cov_params = self.betas_vcov[target_index]
 
-            self.loglikehood = self.p_log_likelihood
-            self.paic = self.p_aic
-            self.pbic = self.p_bic
+            self.loglikehood = self._p_log_likelihood
+            self.paic = self._p_aic
+            self.pbic = self._p_bic
 
             smry = self.__add_table_two_columns(smry, yname=y_name, xname=exog_names)
 
-            self.params = np.array(self.dispersion[target_index]["scalelist"])
-            self.normalized_cov_params = self.dispersion_vcov[target_index]
+            self.params = np.array(self._dispersion[target_index]["scalelist"])
+            self.normalized_cov_params = self._dispersion_vcov[target_index]
 
             smry = self.__add_dispersion(smry)
-            self.params = np.array([self.dispersion[target_index]["power"]])
+            self.params = np.array([self._dispersion[target_index]["power"]])
             self.normalized_cov_params = self.power_vcov[target_index]
 
             smry = self.__add_power(smry)

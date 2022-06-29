@@ -26,7 +26,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
         Args:
             endog : array_like
-                1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list. Recommended method concat of Numpy library.  
+                1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list.  
             exog : array_like
                 A dataset with the endogenous matrix in a Numpy fashion. Since the library doesn't set an intercept by default, the user must add it. In the case of multiple responses, the user must pass the design matrices as a python list. 
             z : array_like

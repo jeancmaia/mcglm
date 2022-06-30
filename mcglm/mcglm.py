@@ -116,7 +116,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
     @property
     def df_resid(self):
-        return self._n_obs - len(self._beta_initial[0])
+        return self._n_obs - self.df_model
 
     def __calculate_static_attributes(
         self, endog, exog, link, variance, z, offset, power, power_fixed, ntrial
@@ -756,6 +756,18 @@ class MCGLMResults(GLMResults):
 
         self._use_t = False
         self.model = None
+        
+    @property
+    def aic(self):
+        return self._p_aic
+    
+    @property
+    def bic(self):
+        return self._p_bic
+    
+    @property
+    def loglikelihood(self):
+        return self._p_log_likelihood
 
     @property
     def bse(self):

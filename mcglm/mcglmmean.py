@@ -63,9 +63,7 @@ class MCGLMMean(MCGLMCAttributes):
 
         mu = link_func.inverse(eta)
         deriv = X * link_func.inverse_deriv(eta)[:, None]
-        return dict(
-            mu=mu, deriv=deriv
-        )  # TODO: pickup a pythonic implementation for it.
+        return dict(mu=mu, deriv=deriv)
 
     def calculate_mean_features(self, link, beta, X, offset):
         mu_attributes_per_response = list(
@@ -100,7 +98,6 @@ class MCGLMMean(MCGLMCAttributes):
         return new_beta, score, sensitivity, variability
 
     def __update_fisher_score(self, sensitivity, score, beta):
-
         linear_system = solve(sensitivity, score)
         index = 0
         adjusted_betas = []
@@ -114,7 +111,7 @@ class MCGLMMean(MCGLMCAttributes):
 
     def __quasi_score(self, mu_derivative, c_inverse, y, mu, W):
         """
-        Quasi-score method optimization has been odopted due to its adaptability and flexibility in comparision to the classical maximum likelihood.
+        Quasi-score method optimization has been adopted due to its adaptability and flexibility in comparision to the classical maximum likelihood.
         """
 
         residue = y - mu
@@ -124,6 +121,6 @@ class MCGLMMean(MCGLMCAttributes):
 
         score = np.dot(np.dot(mu_derivative_and_c, W), residue)
         sensitivity = np.dot(np.dot(-mu_derivative_and_c, W), mu_derivative)
-        variability = np.dot(np.dot(mu_derivative_and_c, W**2), mu_derivative)
+        variability = np.dot(np.dot(mu_derivative_and_c, W ** 2), mu_derivative)
 
         return (score, sensitivity, variability)

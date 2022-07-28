@@ -37,9 +37,6 @@ class MCGLMCAttributes:
         return c_inverse
 
     def c_complete(self, mu, power, rho, tau):
-        """
-        Full response
-        """
         (
             diagonal_matrix,
             omega,
@@ -53,11 +50,11 @@ class MCGLMCAttributes:
             c_inverse,
         ) = self.__generate_c_inverse(mu, power, rho, tau, full_response=True)
 
-        sigma_derivatives = self.__generate_c_derivatives(omega, mu, power)
+        sigma_derivatives = self.__generate_sigma_derivatives(omega, mu, power)
 
         core_matrix = np.kron(sigma_between, diagonal_matrix)
         sigma_chol_block_matrix_transpose = sigma_chol_block_matrix.transpose()
-        c_derivatives = self.__generate_derivative_cov(
+        c_derivatives = self.__generate_derivative_c(
             sigma_chol,
             sigma_chol_inv,
             sigma_derivatives,
@@ -93,6 +90,7 @@ class MCGLMCAttributes:
             self._ntrial,
         )
         sigma_raw, sigma_chol, sigma_chol_inv = self.__parser_sigma(build_sigma)
+
         sigma_between, sigma_between_derivative = self._sigma_between_values(
             rho=rho, n_resp=self._n_targets
         )
@@ -122,7 +120,7 @@ class MCGLMCAttributes:
                 c_inverse,
             )
 
-    def __generate_c_derivatives(self, omega, mu, power):
+    def __generate_sigma_derivatives(self, omega, mu, power):
 
         build_sigma = map(
             self._calculate_sigma_derivatives,
@@ -138,7 +136,7 @@ class MCGLMCAttributes:
         sigma_derivative = self.__parser_sigma_derivatives(build_sigma)
         return sigma_derivative
 
-    def __generate_derivative_cov(
+    def __generate_derivative_c(
         self,
         sigma_chol,
         sigma_chol_inv,
@@ -269,9 +267,6 @@ class MCGLMCAttributes:
         ]
 
     def _generate_omega(self, tau):
-        """
-        It builds omega matrix for covariance link setted as identity.
-        """
         omega = []
         for target in range(self._n_targets):
             omega.append(mc_matrix_linear_predictor(tau=tau[target], z=self._z[target]))
@@ -285,12 +280,11 @@ class MCGLMCAttributes:
         sigma_between: np.array,
         diagonal_matrix,
     ):
-        """ """
         sigma_chol_block_matrix = block_diag(*sigma_chol)
         sigma_chol_inv_block_matrix = block_diag(*sigma_chol_inv)
 
         try:
-            ls_sigma_diagonal = np.linalg.inv(sigma_between)
+            ls_sigma_diagonal = inv(sigma_between)
         except Exception as e:
             ls_sigma_diagonal = np.array([[1]])
 
@@ -311,17 +305,14 @@ class MCGLMCAttributes:
     def _calculate_sigma(
         self, mu, power, omega, variance, Ntrial, covariance="identity"
     ):
-        """
-        Base method for computing variance-covariance matrix, based on variance function and omega matrix. This method will implement for cases where covariance is equal to identity, and variance falls in the list:
-        ['constant', 'tweedie', 'binomialP', 'binomialPQ', 'power', 'geom_tweedie', 'poisson_tweedie']
-        """
         if isinstance(variance, list):
             variance = variance[0]
+
         if variance == "constant":
             sigma_raw = omega
             sigma_chol = cholesky(sigma_raw).T
             sigma_chol_inv = inv(sigma_chol)
-        elif variance in ["tweedie", "binomialP", "binomialPQ", "power"]:
+        elif variance in ["tweedie", "binomialP", "binomialPQ"]:
             if variance == "tweedie":
                 variance = "power"
 
@@ -366,7 +357,7 @@ class MCGLMCAttributes:
 
         if variance == "constant":
             sigma_derivative = z
-        elif variance in ["tweedie", "binomialP", "binomialPQ", "power"]:
+        elif variance in ["tweedie", "binomialP", "binomialPQ"]:
             if variance == "tweedie":
                 variance = "power"
             variance_components = self.__generate_variance(
@@ -382,19 +373,15 @@ class MCGLMCAttributes:
             ]
             if not power_fixed:
                 if variance in ["power", "binomialP"]:
-                    sigma_derivative_power = np.array(
-                        [
-                            mc_sandwich_power(
-                                omega,
+                    
+                    sigma_derivative_power = mc_sandwich_power(
+                                omegas,
                                 variance_components.get("variance_sqrt_output"),
                                 variance_components.get(
                                     "derivative_variance_sqrt_power"
                                 ),
                             )
-                            for omega in omegas
-                        ]
-                    )
-                    sigma_derivative = [sigma_derivative_power, *sigma_derivative]
+                    sigma_derivative.insert(0, sigma_derivative_power)
                 elif variance == "binomialPQ":
                     sigma_derivative_p = mc_sandwich(
                         omegas,
@@ -429,7 +416,7 @@ class MCGLMCAttributes:
                     variance_components.get("variance_sqrt_output"),
                     variance_components.get("derivative_variance_sqrt_power"),
                 )
-                sigma_derivative = [sigma_derivative_power, *sigma_derivative]
+                sigma_derivative.insert(0, sigma_derivative_power)
         return dict(sigma_derivative=sigma_derivative)
 
     def _sigma_between_values(self, rho, n_resp):
@@ -543,7 +530,7 @@ class MCGLMCAttributes:
             return self.__binomialpq_variance_attributes(mu, power, Ntrial)
 
     def __power_variance_attributes(self, mu, power):
-        mu_power = mu**power
+        mu_power = mu ** power
         sqrt_mu_power = np.sqrt(mu_power)
         n_len = len(mu)
 
@@ -561,7 +548,7 @@ class MCGLMCAttributes:
 
     def __binomialp_variance_attributes(self, mu, power, ntrial):
         constant = 1 / ntrial
-        mu_power = mu**power
+        mu_power = mu ** power
         mu_power1 = (1 - mu) ** power
         mu1mu = constant * (mu_power * mu_power1)
         sqrt_mu1mu = np.sqrt(mu1mu)
@@ -588,7 +575,7 @@ class MCGLMCAttributes:
         p = power[0]
         q = power[1]
 
-        mu_p = mu**p
+        mu_p = mu ** p
         mu1_q = (1 - mu) ** q
         mu_p_mu_q = mu_p * mu1_q
         mu1mu = mu_p_mu_q * constant

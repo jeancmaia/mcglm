@@ -65,27 +65,25 @@ def mc_mixed(data=None, formula=None):
     # Find two-points
     positions = list()
     for column in val_columns:
-        if ':' in column:
+        if ":" in column:
             positions.append(1)
         else:
             positions.append(0)
     positions = np.array(positions)
-    
+
     design_matrix = design_matrix.values
 
     all_indexes = [(i, i) for i in set(positions)]
-    
+
     if len(all_indexes) > 1:
-        all_indexes = all_indexes + list(
-            itertools.combinations(list(range(2)), 2)
-        )
+        all_indexes = all_indexes + list(itertools.combinations(list(range(2)), 2))
 
     matrices = list()
     for tc in all_indexes:
-        #matrix1 = np.repeat(design_matrix[:, tc[0]], size, axis=0).reshape(size, size).T
-        #matrix2 = np.repeat(design_matrix[:, tc[1]], size, axis=0).reshape(size, size).T
-        matrix1 = design_matrix[:, np.where(positions == tc[0])[0] ]
-        matrix2 = design_matrix[:, np.where(positions == tc[1])[0] ]      
+        # matrix1 = np.repeat(design_matrix[:, tc[0]], size, axis=0).reshape(size, size).T
+        # matrix2 = np.repeat(design_matrix[:, tc[1]], size, axis=0).reshape(size, size).T
+        matrix1 = design_matrix[:, np.where(positions == tc[0])[0]]
+        matrix2 = design_matrix[:, np.where(positions == tc[1])[0]]
 
         if tc[0] == tc[1]:
             matrices.append(np.matmul(matrix1, matrix2.T))

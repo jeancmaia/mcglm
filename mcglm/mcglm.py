@@ -202,6 +202,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
                 if set_power:
                     power_list.append(initial_power(variance[index]))
 
+            rho = list()
             for _ in range(int(n_targets * (n_targets - 1) / 2)):
                 rho.append(0)
 
@@ -281,6 +282,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         """
         Gaussian Pseudo-loglikelihood
         """
+
         def gauss(residue, det_sigma, inv_sigma):
             import math
 
@@ -619,9 +621,7 @@ class MCGLMParameters:
         mat0 = np.zeros((s_cov_beta.shape[1], s_cov_beta.shape[0]))
 
         cross_term = mc_sandwich(s_cov_beta, -inv_S_cov, inv_S_beta)
-
         p1 = np.append(inv_S_beta, cross_term, axis=0)
-
         p2 = np.append(mat0, inv_S_cov, axis=0)
 
         joint_inv_sensitivity = np.append(p1, p2, axis=1)
@@ -639,9 +639,7 @@ class MCGLMParameters:
         nrow = len(cov_product)
         return np.zeros((nrow, columns_size))
 
-    def generate_var_variability(
-        res, w, c_inv, c_val, c_comp
-    ):
+    def generate_var_variability(res, w, c_inv, c_val, c_comp):
 
         return MCGLMParameters._calculate_variability(
             product=c_comp,
@@ -655,8 +653,8 @@ class MCGLMParameters:
         n_par = len(product)
         we = [np.dot(product[index], inv_C) for index in range(n_par)]
 
-        k4 = res**4 - 3 * np.diag(C) ** 2
-        sensitivity = MCGLMVariance.generate_sensitivity(product, W=W**2)
+        k4 = res ** 4 - 3 * np.diag(C) ** 2
+        sensitivity = MCGLMVariance.generate_sensitivity(product, W=W ** 2)
         W = np.diag(W).flatten()
 
         variability = MCGLMParameters._mc_variability(sensitivity, we, k4, W)
@@ -731,7 +729,7 @@ class MCGLMResults(GLMResults):
     ):
         self._normalized_var_cov = normalized_var_cov
         self._nobs = nobs
-        self._n_targets  = n_targets
+        self._n_targets = n_targets
         self._y_names = y_names
         self._regression = regression
         self._dispersion = dispersion
@@ -756,15 +754,15 @@ class MCGLMResults(GLMResults):
 
         self._use_t = False
         self.model = None
-        
+
     @property
     def aic(self):
         return self._p_aic
-    
+
     @property
     def bic(self):
         return self._p_bic
-    
+
     @property
     def loglikelihood(self):
         return self._p_log_likelihood
@@ -810,12 +808,12 @@ class MCGLMResults(GLMResults):
         statsmodels.families.varfuncs for more information.
         """
         residuals = []
-        if self._n_targets  == 1:
+        if self._n_targets == 1:
             mu = [self.mu]
         else:
-            mu = self.mu.reshape(self._n_targets , -1)
+            mu = self.mu.reshape(self._n_targets, -1)
 
-        for index in range(self._n_targets ):
+        for index in range(self._n_targets):
             residue = (
                 self._y_values[index * self._nobs : index * self._nobs + self._nobs]
                 - mu[index]
@@ -998,13 +996,13 @@ class MCGLMResults(GLMResults):
         index_position = 0
         cov_params = self._normalized_var_cov
 
-        if self._n_targets  == 1:
+        if self._n_targets == 1:
             self._rho_vcov = np.array([np.nan])
             mu = [self.mu]
         else:
             mu = self.mu
 
-        for index in range(self._n_targets ):
+        for index in range(self._n_targets):
 
             n_betas = len(self._regression[index])
             self.betas_vcov.append(
@@ -1015,7 +1013,7 @@ class MCGLMResults(GLMResults):
             )
             index_position += n_betas
 
-        if self._n_targets  > 1:
+        if self._n_targets > 1:
             self._rho_vcov = cov_params[
                 index_position : index_position + len(self._rho),
                 index_position : index_position + len(self._rho),
@@ -1023,7 +1021,7 @@ class MCGLMResults(GLMResults):
 
             index_position += len(self._rho)
 
-        for index in range(self._n_targets ):
+        for index in range(self._n_targets):
 
             if self._power_fixed_list[index]:
                 self.power_vcov.append(np.array([np.nan]))
@@ -1053,7 +1051,7 @@ class MCGLMResults(GLMResults):
 
         smry = Summary()
 
-        for target_index in range(self._n_targets ):
+        for target_index in range(self._n_targets):
             exog_names = self._X[target_index].columns.tolist()
             y_name = self._y_names[target_index]
 

@@ -25,15 +25,15 @@ class MCGLMCAttributes:
 
     def c_inverse(self, mu, power, rho, tau, full_response=False):
         """
-        A method to generate only the inverse of the C matrix, explicitly made for the mean treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter. 
+        A method to generate only the inverse of the C matrix, explicitly made for the mean treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter.
         """
         c_inverse = self.__generate_c_inverse(mu, power, rho, tau, full_response)
         return c_inverse
 
     def c_complete(self, mu, power, rho, tau):
         """
-        A method to generate the whole list of C components, explicitly made for the variance treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter. 
-        """        
+        A method to generate the whole list of C components, explicitly made for the variance treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter.
+        """
         (
             diagonal_matrix,
             omega,

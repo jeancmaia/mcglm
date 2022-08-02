@@ -19,7 +19,8 @@ def mc_id(data=None):
 
 def mc_ma(id=None, time=None, data=None, order=1):
     """
-    mc_ma method retrieves the components for matrix linear predictor associated with moving average models.
+    mc_ma method retrieves the Z components for matrix linear predictor associated with Autoregressive models(Feller, W. (1957). An introduction to probability theory and its applications / William Feller.
+    Wiley New York, 2nd ed. edition.)
     """
 
     def diagonal_position(indexes=None, k=1):
@@ -57,7 +58,7 @@ def mc_ma(id=None, time=None, data=None, order=1):
 
 def mc_mixed(data=None, formula=None):
     """
-    mc_mixed retrieves the components for matrix linear predictor associated with mixed models.
+    mc_mixed retrieves the components for matrix linear predictor associated with mixed models(Demidenko E (2013). Mixed Models: Theory and Applications with R. John Wiley & Sons. doi:10.1002/0471728438.).
     """
     design_matrix = dmatrix(formula, data=data, return_type="dataframe")
     val_columns = design_matrix.columns.tolist()

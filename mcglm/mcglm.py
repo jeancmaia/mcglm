@@ -112,15 +112,31 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
     @property
     def df_model(self):
+        """Calculates the degree of freedom for the model."""
         return len(self._beta_initial[0]) + len(self._tau_initial[0])
 
     @property
     def df_resid(self):
+        """Calculates the degree of freedom for the model residuals."""
         return self._n_obs - self.df_model
 
     def __calculate_static_attributes(
         self, endog, exog, link, variance, z, offset, power, power_fixed, ntrial
     ):
+        """Base method to warm up the pivotal artifacts for model training. It fulfills the None with default values, sets the power value, and creates the base vectors.
+
+        Args:
+            endog (list or np.array): _description_
+            exog (list or np.array): _description_
+            link (list): _description_
+            variance (list): _description_
+            z (list): _description_
+            offset (list): _description_
+            power (list): _description_
+            power_fixed (list): _description_
+            ntrial (list): _description_
+        """
+
         def initial_power(variance):
             if variance in [
                 "binomialP",
@@ -317,7 +333,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         )
 
     def _fit(self):
-        """The _fit implements the inference pipeline for mcglm."""
+        """This method implements the core inference for MCGLM, by all the means of the two-moment assumptions."""
         W = (
             np.diag(np.ones(len(self._y_values)))
             if self._weights is None
@@ -577,6 +593,11 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
 
 class MCGLMParameters:
+    """According to MCGLM specification, grounded for frequentist inference traits, the estimation of resulting parameters converge asymptotically to a gaussian distribution with tuple mean-variance = (actual parameters, inverse of matrix Godambe). This property allows the calculation of pivotal traits regarding the parameters, such as: hypothesis testing and confidence interval.
+
+    This class implements every method related to this trait.
+    """
+
     @staticmethod
     def _parameters_attributes(
         resid,
@@ -701,6 +722,12 @@ class MCGLMParameters:
 
 
 class MCGLMResults(GLMResults):
+    """MCGLM Class for generating and manipulating results of mcglm training. The main output goes by the method summary(), the classical statsmodels output. Therefore, the user can access the attributes "aic", "bic" e loglikelihood.
+
+    Args:
+        GLMResults: Class of statsmodels library for presenting results of GLM.
+    """
+
     def __init__(
         self,
         normalized_var_cov,
@@ -800,7 +827,7 @@ class MCGLMResults(GLMResults):
             return stats.norm.sf(np.abs(self.tvalues)) * 2
 
     @property
-    def pearson_residue(self):
+    def pearson_residuals(self):
         """
         Pearson residuals.  The Pearson residuals are defined as
         (`endog` - `mu`)/sqrt(VAR(`mu`)) where VAR is the distribution
@@ -986,7 +1013,7 @@ class MCGLMResults(GLMResults):
 
     def summary(self, yname=None, xname=None, title=None, alpha=0.05):
         """
-        Summarize the Regression Results
+        It generates the summary report as the sketch of classical "statsmodels" library. The summary shows all parameters found thoroughly, for each response.
         """
         self._dispersion_vcov = []
         self.betas_vcov = []

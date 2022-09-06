@@ -34,7 +34,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             link : array_like, string or None
                 Specification for the link function. The MCGLM library implements the following options: identity, logit, power, log, probit, cauchy, cloglog, loglog, negativebinomial. In the case of None, the library chooses the identity link. In multiple responses, user must pass values as list.  
             variance : array_like, string or None
-                Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, power, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.   
+                Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.   
             offset : array_like or None
                 Offset for continuous or count. In multiple responses, user must pass values as list.   
             Ntrial : array_like or None
@@ -429,7 +429,9 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         )
 
     def __get_dispersion_parameters(self, mu, rho, tau, dispersion):
-        covariances = dispersion.tolist()
+
+        covariances = dispersion.tolist()     
+        
         if self._n_targets == 1:
             rho = np.array([rho])
         elif self._n_targets > 1:
@@ -444,9 +446,11 @@ class MCGLM(MCGLMMean, MCGLMVariance):
                 "mu": mu[index * self._n_obs : (index + 1) * self._n_obs],
             }
 
-            scale_output = {
+            size_parameters = len(tau[index]) if self._power_fixed[index] else len(tau[index]) - 1
+            
+            scale_output = {                
                 "scalelist": [
-                    round(covariances.pop(0), 3) for _ in range(len(tau[index]))
+                    round(covariances.pop(0), 3) for _ in range(size_parameters)
                 ]
             }
 
@@ -546,9 +550,10 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params, mdl_results.scale
 
         def log_est(endog, exog, offset):
+            
             mdl = GLM(
-                endog, exog, family=sm.families.Tweedie(var_power=1), offset=offset
-            )
+                    endog, exog, family=sm.families.Tweedie(var_power=1), offset=offset
+                )
             mdl_results = mdl.fit()
             return mdl_results.params, mdl_results.scale
 
@@ -576,6 +581,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             "cloglog": cloglog_est,
             "loglog": loglog_est,
             "negativebinomial": negative_binomial_est,
+            "inverse_power": log_est
         }
 
         for target in range(self._n_targets):

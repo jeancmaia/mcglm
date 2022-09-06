@@ -21,6 +21,7 @@ coverage = "^6.4.1"
 jupyter = "^1.0.0"
 jupyterlab = "^3.4.3"
 pylint = "^2.14.3"
+Sphinx = "^5.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1866,7 +1866,6 @@ def test_fit_mcglm__link_tweedie_and_power_fixed__one_variable():
         c_inverse,
         c_values,
     ) = mdl._fit()
-    # print(regression_historical[-1])
     np.testing.assert_almost_equal(
         regression_historical[-1], np.array([[4.97, 1.93, -1.12]]), decimal=2
     )

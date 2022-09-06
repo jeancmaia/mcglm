@@ -11,6 +11,7 @@ from statsmodels.genmod.families.links import (
     CLogLog,
     LogLog,
     NegativeBinomial,
+    inverse_power
 )
 from scipy.linalg import block_diag
 from numpy.linalg import solve
@@ -26,6 +27,7 @@ AVAILABLE_LINK_FUNCTIONS = {
     "cloglog": CLogLog(),
     "loglog": LogLog(),
     "negativebinomial": NegativeBinomial(),
+    "inverse_power": inverse_power()
 }
 
 

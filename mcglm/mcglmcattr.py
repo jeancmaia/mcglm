@@ -517,13 +517,13 @@ class MCGLMCAttributes:
         self, variance_type: str, mu: np.array, power: int = 1, Ntrial: list = 1
     ):
         if variance_type == "power":
-            return self.__power_variance_attributes(mu, power)
+            return self.__power_variance(mu, power)
         elif variance_type == "binomialP":
-            return self.__binomialp_variance_attributes(mu, power, Ntrial)
+            return self.__binomialp_variance(mu, power, Ntrial)
         elif variance_type == "binomialPQ":
-            return self.__binomialpq_variance_attributes(mu, power, Ntrial)
+            return self.__binomialpq_variance(mu, power, Ntrial)
 
-    def __power_variance_attributes(self, mu, power):
+    def __power_variance(self, mu, power):
         mu_power = mu ** power
         sqrt_mu_power = np.sqrt(mu_power)
         n_len = len(mu)
@@ -540,7 +540,7 @@ class MCGLMCAttributes:
             derivative_variance_sqrt_mu=derivative_variance_sqrt_mu,
         )
 
-    def __binomialp_variance_attributes(self, mu, power, ntrial):
+    def __binomialp_variance(self, mu, power, ntrial):
         constant = 1 / ntrial
         mu_power = mu ** power
         mu_power1 = (1 - mu) ** power
@@ -564,7 +564,7 @@ class MCGLMCAttributes:
             derivative_variance_sqrt_mu=derivative_variance_sqrt_mu,
         )
 
-    def __binomialpq_variance_attributes(self, mu, power, ntrial):
+    def __binomialpq_variance(self, mu, power, ntrial):
         constant = 1 / ntrial
         p = power[0]
         q = power[1]

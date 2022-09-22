@@ -533,23 +533,42 @@ def test_mc_build_sigma__tweedie_and_fixed_true(mcglmmean, mcglmvattributes):
         np.array(
             [
                 [1.4838, 0.934, 1.2702, 1.679, 2.174],
-                [0.9341, 2.857, 1.6792, 2.174, 2.772],
-                [1.2702, 1.679, 4.8929, 2.772, 3.490],
-                [1.6792, 2.174, 2.7721, 7.853, 4.350],
-                [2.1746, 2.772, 3.4903, 4.350, 12.100],
             ]
         ),
         decimal=3,
     )
     np.testing.assert_almost_equal(
-        sigma_derivatives.get("sigma_derivative")[2],
+        sigma_derivatives.get("sigma_derivative")[0][1],
         np.array(
             [
-                [1.6487, 1.8682, 2.1170, 2.3988, 2.7182],
-                [1.8682, 2.1170, 2.3988, 2.7182, 3.0802],
-                [2.1170, 2.3988, 2.7182, 3.0802, 3.4903],
-                [2.3988, 2.7182, 3.0802, 3.4903, 3.9550],
-                [2.7182, 3.0802, 3.4903, 3.9550, 4.4816],
+                [0.9341, 2.857, 1.6792, 2.174, 2.772],
+            ]
+        ),
+        decimal=3,
+    )
+    np.testing.assert_almost_equal(
+        sigma_derivatives.get("sigma_derivative")[0][2],
+        np.array(
+            [
+                [1.2702, 1.679, 4.8929, 2.772, 3.490],
+            ]
+        ),
+        decimal=3,
+    )
+    np.testing.assert_almost_equal(
+        sigma_derivatives.get("sigma_derivative")[0][3],
+        np.array(
+            [
+                [1.6792, 2.174, 2.7721, 7.853, 4.350],
+            ]
+        ),
+        decimal=3,
+    )
+    np.testing.assert_almost_equal(
+        sigma_derivatives.get("sigma_derivative")[0][4],
+        np.array(
+            [
+                [2.1746, 2.772, 3.4903, 4.350, 12.100],
             ]
         ),
         decimal=3,

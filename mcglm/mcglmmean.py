@@ -11,7 +11,7 @@ from statsmodels.genmod.families.links import (
     CLogLog,
     LogLog,
     NegativeBinomial,
-    inverse_power
+    inverse_power,
 )
 from scipy.linalg import block_diag
 from numpy.linalg import solve
@@ -27,7 +27,7 @@ AVAILABLE_LINK_FUNCTIONS = {
     "cloglog": CLogLog(),
     "loglog": LogLog(),
     "negativebinomial": NegativeBinomial(),
-    "inverse_power": inverse_power()
+    "inverse_power": inverse_power(),
 }
 
 
@@ -123,6 +123,6 @@ class MCGLMMean(MCGLMCAttributes):
 
         score = np.dot(np.dot(mu_derivative_and_c, W), residue)
         sensitivity = np.dot(np.dot(-mu_derivative_and_c, W), mu_derivative)
-        variability = np.dot(np.dot(mu_derivative_and_c, W ** 2), mu_derivative)
+        variability = np.dot(np.dot(mu_derivative_and_c, W**2), mu_derivative)
 
         return (score, sensitivity, variability)

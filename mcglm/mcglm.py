@@ -430,8 +430,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
     def __get_dispersion_parameters(self, mu, rho, tau, dispersion):
 
-        covariances = dispersion.tolist()     
-        
+        covariances = dispersion.tolist()
+
         if self._n_targets == 1:
             rho = np.array([rho])
         elif self._n_targets > 1:
@@ -446,9 +446,11 @@ class MCGLM(MCGLMMean, MCGLMVariance):
                 "mu": mu[index * self._n_obs : (index + 1) * self._n_obs],
             }
 
-            size_parameters = len(tau[index]) if self._power_fixed[index] else len(tau[index]) - 1
-            
-            scale_output = {                
+            size_parameters = (
+                len(tau[index]) if self._power_fixed[index] else len(tau[index]) - 1
+            )
+
+            scale_output = {
                 "scalelist": [
                     round(covariances.pop(0), 3) for _ in range(size_parameters)
                 ]
@@ -550,10 +552,10 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params, mdl_results.scale
 
         def log_est(endog, exog, offset):
-            
+
             mdl = GLM(
-                    endog, exog, family=sm.families.Tweedie(var_power=1), offset=offset
-                )
+                endog, exog, family=sm.families.Tweedie(var_power=1), offset=offset
+            )
             mdl_results = mdl.fit()
             return mdl_results.params, mdl_results.scale
 
@@ -581,7 +583,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             "cloglog": cloglog_est,
             "loglog": loglog_est,
             "negativebinomial": negative_binomial_est,
-            "inverse_power": log_est
+            "inverse_power": log_est,
         }
 
         for target in range(self._n_targets):
@@ -680,8 +682,8 @@ class MCGLMParameters:
         n_par = len(product)
         we = [np.dot(product[index], inv_C) for index in range(n_par)]
 
-        k4 = res ** 4 - 3 * np.diag(C) ** 2
-        sensitivity = MCGLMVariance.generate_sensitivity(product, W=W ** 2)
+        k4 = res**4 - 3 * np.diag(C) ** 2
+        sensitivity = MCGLMVariance.generate_sensitivity(product, W=W**2)
         W = np.diag(W).flatten()
 
         variability = MCGLMParameters._mc_variability(sensitivity, we, k4, W)

@@ -524,7 +524,7 @@ class MCGLMCAttributes:
             return self.__binomialpq_variance(mu, power, Ntrial)
 
     def __power_variance(self, mu, power):
-        mu_power = mu ** power
+        mu_power = mu**power
         sqrt_mu_power = np.sqrt(mu_power)
         n_len = len(mu)
 
@@ -542,7 +542,7 @@ class MCGLMCAttributes:
 
     def __binomialp_variance(self, mu, power, ntrial):
         constant = 1 / ntrial
-        mu_power = mu ** power
+        mu_power = mu**power
         mu_power1 = (1 - mu) ** power
         mu1mu = constant * (mu_power * mu_power1)
         sqrt_mu1mu = np.sqrt(mu1mu)
@@ -569,7 +569,7 @@ class MCGLMCAttributes:
         p = power[0]
         q = power[1]
 
-        mu_p = mu ** p
+        mu_p = mu**p
         mu1_q = (1 - mu) ** q
         mu_p_mu_q = mu_p * mu1_q
         mu1mu = mu_p_mu_q * constant

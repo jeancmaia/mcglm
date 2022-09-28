@@ -27,7 +27,7 @@ AVAILABLE_LINK_FUNCTIONS = {
     "cloglog": CLogLog(),
     "loglog": LogLog(),
     "negativebinomial": NegativeBinomial(),
-    "inverse_power": inverse_power(),
+    "inverse_power": inverse_power()
 }
 
 

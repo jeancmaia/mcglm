@@ -584,6 +584,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             "loglog": loglog_est,
             "negativebinomial": negative_binomial_est,
             "inverse_power": log_est,
+            "reciprocal": power_est
         }
 
         for target in range(self._n_targets):
@@ -655,7 +656,8 @@ class MCGLMParameters:
 
         joint_inv_sensitivity = np.append(p1, p2, axis=1)
         varcov = mc_sandwich(
-            joint_variability, joint_inv_sensitivity, joint_inv_sensitivity.transpose()
+            joint_variability, joint_inv_sensitivity, 
+            joint_inv_sensitivity.transpose()
         )
 
         return (

@@ -18,37 +18,59 @@ from .utils import mc_sandwich
 
 
 class MCGLM(MCGLMMean, MCGLMVariance):
-
     __doc__ = """
-        MCGLM class that implements MCGLM algorithm. (Bonat, Jørgensen 2015)
+    MCGLM class that implements MCGLM stastical models. (Bonat, Jørgensen 2015)
         
-        It extends GLM for multi-responses and dependent components by fitting second-moment adjustment.
+    It extends GLM for multi-responses and dependent components by fitting second-moment assumptions.
 
-        Args:
-            endog : array_like
-                1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list.  
-            exog : array_like
-                A dataset with the endogenous matrix in a Numpy fashion. Since the library doesn't set an intercept by default, the user must add it. In the case of multiple responses, the user must pass the design matrices as a python list. 
-            z : array_like
-                List with matrices components of the linear covariance matrix.
-            link : array_like, string or None
-                Specification for the link function. The MCGLM library implements the following options: identity, logit, power, log, probit, cauchy, cloglog, loglog, negativebinomial. In the case of None, the library chooses the identity link. In multiple responses, user must pass values as list.  
-            variance : array_like, string or None
-                Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.   
-            offset : array_like or None
-                Offset for continuous or count. In multiple responses, user must pass values as list.   
-            Ntrial : array_like or None
-                Ntrial for binomial responses. In multiple responses, user must pass values as list.
-            power_fixed : array_like or None
-                Parameter that allows estimation of power when variance functions is either tweedie, geom_tweedie or poisson_tweedie. In multiple responses, user must pass values as list. 
-            maxiter : float or None
-                Number max of iterations. Defaults to 200.
-            tol : float or None
-                Threshold of minimum absolute change on paramaters. Defaults to 0.0001.
-            tuning : float or None
-                Step size parameter. Defaults to 0.5.
-            weights : array_like or None
-                Weight matrix. Defaults to None.
+    Parameters
+    ----------
+    endog : array_like
+        1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list.  
+    exog : array_like
+        A dataset with the endogenous matrix in a Numpy fashion. Since the library doesn't set an intercept by default, the user must add it. In the case of multiple responses, the user must pass the design matrices as a python list. 
+    z : array_like
+        List with matrices components of the linear covariance matrix.
+    link : array_like, string or None
+        Specification for the link function. The MCGLM library implements the following options: identity, logit, power, log, probit, cauchy, cloglog, loglog, negativebinomial. In the case of None, the library chooses the identity link. In multiple responses, user must pass values as list.  
+    variance : array_like, string or None
+        Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.   
+    offset : array_like or None
+        Offset for continuous or count. In multiple responses, user must pass values as list.   
+    Ntrial : array_like or None
+        Ntrial for binomial responses. In multiple responses, user must pass values as list.
+    power_fixed : array_like or None
+        Parameter that allows estimation of power when variance functions is either tweedie, geom_tweedie or poisson_tweedie. In multiple responses, user must pass values as list. 
+    maxiter : float or None
+        Number max of iterations. Defaults to 200.
+    tol : float or None
+        Threshold of minimum absolute change on paramaters. Defaults to 0.0001.
+    tuning : float or None
+        Step size parameter. Defaults to 0.5.
+    weights : array_like or None
+        Weight matrix. Defaults to None.
+        
+    Examples
+    ----------
+    >>> import statsmodels.api as sm
+    >>> data = sm.datasets.scotland.load()
+    >>> data.exog = sm.add_constant(data.exog)
+    
+    >>> model = sm.GLM(data.endog, data.exog, z=[mc_id(data.exog)],
+    ...                      link="log", variance="tweedie",
+    ...                      power=2, power_fixed=False)
+    
+    >>> model_results = model.fit()
+    >>> model_results.mu
+    >>> model_results.pearson_residuals
+    >>> model_results.aic
+    >>> model_results.bic
+    >>> model_results.loglikelihood
+    
+    Notes
+    -----
+    MCGLM is a brand new model, which provides a solid statistical model for fitting multi-responses non-gaussian, dependent, or independent data based on second-moment assumptions. When a user instantiates an mcglm object, she must specify attributes such as link, variance, and z matrices; it will drive the overall behavior of the model.
+    For more details, check articles and documentation provided.
     """
 
     def __init__(
@@ -519,17 +541,49 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         return covariance
 
     def __update_optimal_dispersion(self):
+        """Update optimal dispersion method calculates optimal values for regression parameters and the dispersion. It harnesses the GLM API of statsmodels for calculating those values."""
+
         def logit_est(endog, exog, offset):
+            """For the Logit link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(endog, exog, family=sm.families.Binomial(), offset=offset)
             mdl_results = mdl.fit()
             return mdl_results.params.values, mdl_results.scale
 
         def loglog_est(endog, exog, offset):
+            """For the LogLog link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(endog, exog, family=sm.families.Binomial(LogLog()), offset=offset)
             mdl_results = mdl.fit()
             return mdl_results.params.values, mdl_results.scale
 
         def cloglog_est(endog, exog, offset):
+            """For the CLogLog link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(
                 endog, exog, family=sm.families.Binomial(CLogLog()), offset=offset
             )
@@ -537,22 +591,61 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def cauchy_est(endog, exog, offset):
+            """For the Cauchy link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(endog, exog, family=sm.families.Binomial(cauchy()), offset=offset)
             mdl_results = mdl.fit()
             return mdl_results.params.values, mdl_results.scale
 
         def probit_est(endog, exog, offset):
+            """For the Cauchy link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(endog, exog, family=sm.families.Binomial(probit()), offset=offset)
             mdl_results = mdl.fit()
             return mdl_results.params.values, mdl_results.scale
 
         def identity_est(endog, exog, offset=None):
+            """For the Identity link function, the method adjusts a OLS. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = sm.OLS(endog, exog, offset=offset)
             mdl_results = mdl.fit()
             return mdl_results.params, mdl_results.scale
 
         def log_est(endog, exog, offset):
+            """For the Log link function, the method adjusts a GLM with Tweedie(power=1) family. It retrieves the parameters specified.
 
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(
                 endog, exog, family=sm.families.Tweedie(var_power=1), offset=offset
             )
@@ -560,6 +653,16 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params, mdl_results.scale
 
         def power_est(endog, exog, offset):
+            """For either the Power or Reciprocal link function, the method adjusts a GLM with Tweedie(power=2) family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(
                 endog, exog, family=sm.families.Tweedie(var_power=2), offset=offset
             )
@@ -567,6 +670,16 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def negative_binomial_est(endog, exog, offset):
+            """For the Negative Binomial link function, the method adjusts a GLM with Tweedie(power=2) family. It retrieves the parameters specified.
+
+            Args:
+                endog (array-like): outcome variable.
+                exog (array-like): independent variables.
+                offset (int): shift on response variable.
+
+            Returns:
+                tuple: regression parameters, dispersion parameter.
+            """
             mdl = GLM(
                 endog, exog, family=sm.families.Tweedie(var_power=2), offset=offset
             )
@@ -584,7 +697,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             "loglog": loglog_est,
             "negativebinomial": negative_binomial_est,
             "inverse_power": log_est,
-            "reciprocal": power_est
+            "reciprocal": power_est,
         }
 
         for target in range(self._n_targets):
@@ -656,8 +769,7 @@ class MCGLMParameters:
 
         joint_inv_sensitivity = np.append(p1, p2, axis=1)
         varcov = mc_sandwich(
-            joint_variability, joint_inv_sensitivity, 
-            joint_inv_sensitivity.transpose()
+            joint_variability, joint_inv_sensitivity, joint_inv_sensitivity.transpose()
         )
 
         return (

@@ -5,7 +5,7 @@ description = "Multivariate Covariance Generalized Linear Models"
 authors = ["Jean Carlos Maia <jeanclmaia@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.10"
+python = ">=3.9"
 patsy = "^0.5.2"
 matplotlib = "^3.5.2"
 statsmodels = "^0.13.2"

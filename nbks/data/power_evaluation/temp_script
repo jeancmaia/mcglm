@@ -1,0 +1,10 @@
+source("full_model.R")
+data <- read.csv("data_sim_0.csv") 
+data <- as.data.frame(data)
+
+library(Matrix)
+library(assertthat)
+
+Z <- mc_id(data[c("cov1", "cov2")])
+
+fit.mcglm = mcglm(linear_pred = c(y ~ cov1 + cov2), matrix_pred = list("vector" = Z), link="log", variance="tweedie", data=data, power_fixed=FALSE, control_algorithm = list(verbose=FALSE, method="chaser"))

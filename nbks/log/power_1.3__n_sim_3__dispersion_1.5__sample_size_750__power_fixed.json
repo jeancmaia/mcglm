@@ -1,0 +1,1 @@
+{"beta0": [2.0122, 1.9409, 2.0034], "beta1": [0.749, 0.8067, 0.8254], "beta2": [-1.5542, -1.5416, -1.519], "dispersion": [1.18, 2.677, 0.451], "beta0_confidence_interval": [true, true, true], "beta1_confidence_interval": [true, true, true], "beta2_confidence_interval": [true, true, true], "dispersion_confidence_interval": [false, false, false], "power": [2.1017, 2.0576, 2.247]}

@@ -529,10 +529,10 @@ class MCGLMCAttributes:
         if variance == "constant":
             sigma_derivative = z
         elif variance in ["tweedie", "binomialP", "binomialPQ"]:
-            if variance == "tweedie":
-                variance = "power"
+            variance_type = variance if variance != "tweedie" else "power"
+
             variance_components = self.__generate_variance(
-                variance_type=variance, mu=mu.get("mu"), power=power, Ntrial=Ntrial
+                variance_type=variance_type, mu=mu.get("mu"), power=power, Ntrial=Ntrial
             )
             sigma_derivative = [
                 mc_sandwich(
@@ -543,14 +543,16 @@ class MCGLMCAttributes:
                 for d_omega in z
             ]
             if not power_fixed:
-                if variance in ["power", "binomialP"]:
-
+                if variance in ["tweedie", "binomialP"]:
+ 
                     sigma_derivative_power = mc_sandwich_power(
                         omegas,
                         variance_components.get("variance_sqrt_output"),
                         variance_components.get("derivative_variance_sqrt_power"),
                     )
                     sigma_derivative.insert(0, sigma_derivative_power)
+                    #sigma_derivative.append(sigma_derivative_power)
+
                 elif variance == "binomialPQ":
                     sigma_derivative_p = mc_sandwich(
                         omegas,

@@ -86,7 +86,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         power_fixed=None,
         maxiter=50,
         tol=0.001,
-        tuning=0.5,
+        tuning=1,
         weights=None,
     ):
         super(MCGLM, self).__init__()
@@ -380,6 +380,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         dispersion_historical.append(dispersion)
         for iter in range(self._max_iter):
             # First moment
+
             (
                 new_regression,
                 quasi_score,
@@ -392,6 +393,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             mu_attributes, mu, mu_derivatives = self.calculate_mean_features(
                 self._link, new_regression, self._X, self._offset
             )
+
             (
                 new_dispersion,
                 c_inverse,
@@ -401,12 +403,12 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             ) = self.update_covariates(
                 mu_attributes, rho, power, tau, W, dispersion, mu
             )
+
             dispersion_historical.append(new_dispersion)
 
             regression, dispersion, rho, power, tau = self.__iteration_update(
                 new_regression, new_dispersion, rho, power, tau
             )
-
             if self.__check_stop_criterion(
                 regression_historical, dispersion_historical
             ):
@@ -469,7 +471,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             }
 
             size_parameters = (
-                len(tau[index]) if self._power_fixed[index] else len(tau[index]) - 1
+                len(tau[index]) if self._power_fixed[index] else len(tau[index])
             )
 
             scale_output = {
@@ -496,7 +498,10 @@ class MCGLM(MCGLMMean, MCGLMVariance):
     def __iteration_update(self, new_regression, new_dispersion, rho, power, tau):
 
         if self._n_targets == 1:
-            return new_regression, new_dispersion, rho, power, [new_dispersion]
+            if self._power_fixed[0]:
+                return new_regression, new_dispersion, rho, power, [new_dispersion]
+            else:
+                return new_regression, new_dispersion, rho, [new_dispersion[0]], [new_dispersion[1:].tolist()]
 
         if (isinstance(rho, list)) or (isinstance(rho, np.ndarray)):
             new_rho = new_dispersion[0 : len(rho)]
@@ -523,7 +528,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
                 additions += 1
             stack_index += additions
             new_tau.append(temp_tau)
-
+            
         return new_regression, new_dispersion, new_rho, new_power, new_tau
 
     def __create_dispersion_vector(self, rho, power, tau):
@@ -900,6 +905,7 @@ class MCGLMResults(GLMResults):
         self._X = X
         self._ntrial = ntrial
         self.params = None
+        #self.bse = None
 
         self._use_t = False
         self.model = None
@@ -925,7 +931,7 @@ class MCGLMResults(GLMResults):
             bse_ = np.empty(len(self.params))
             bse_[:] = np.nan
         else:
-            bse_ = np.sqrt(np.diag(self.cov_params()))
+            bse_ = np.sqrt(np.diag(self.normalized_cov_params))
         return bse_
 
     @property
@@ -1219,6 +1225,7 @@ class MCGLMResults(GLMResults):
             self.params = np.array(self._dispersion[target_index]["scalelist"])
             self.normalized_cov_params = self._dispersion_vcov[target_index]
 
+            #self.bse = np.sqrt(np.diag(self.normalized_cov_params))
             smry = self.__add_dispersion(smry)
             self.params = np.array([self._dispersion[target_index]["power"]])
             self.normalized_cov_params = self.power_vcov[target_index]

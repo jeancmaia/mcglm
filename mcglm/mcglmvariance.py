@@ -42,7 +42,6 @@ class MCGLMVariance(MCGLMCAttributes):
         c_inverse, c_derivative, c_values = self.c_complete(
             mu_attributes, power, rho, tau
         )
-
         (
             pearson_score,
             sensitivity,

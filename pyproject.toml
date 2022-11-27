@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mcglm"
-version = "0.1.0"
+version = "0.2.0"
 description = "Multivariate Covariance Generalized Linear Models"
 authors = ["Jean Carlos Maia <jeanclmaia@gmail.com>"]
 

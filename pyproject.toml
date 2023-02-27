@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "mcglm"
-version = "0.2.0"
+version = "0.2.1"
 description = "Multivariate Covariance Generalized Linear Models"
 authors = ["Jean Carlos Maia <jeanclmaia@gmail.com>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<=3.9"

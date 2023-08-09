@@ -20,3 +20,12 @@ To install this package, use
 ```bash
 pip install mcglm
 ```
+
+Tutorial MCGLM instills on the library usage by a wide-variety of examples(https://jeancmaia.github.io/posts/tutorial-mcglm/tutorial_mcglm.html). The following code snippet shows the model fitting for a Gaussian regression analysis.
+
+```python
+modelresults = MCGLM(endog=y, exog=X).fit()
+
+modelresults.summary()
+```
+

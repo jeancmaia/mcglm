@@ -156,7 +156,8 @@ The library `mcglm` provides the first Python tool for statistical analysis with
 the aid of McGLMs. Heavily influenced by its twin R version 
 [@Bonat:2018], the library has ninety-one percent of unit-testing 
 coverage. URLs of source-code and PyPI, the official repository for Python 
-libraries, are (https://github.com/jeancmaia/mcglm) and (https://pypi.org/project/mcglm/). 
+libraries, are [https://github.com/jeancmaia/mcglm](https://github.com/jeancmaia/mcglm) 
+and [https://pypi.org/project/mcglm/](https://pypi.org/project/mcglm/). 
 The library `mcglm` can easily be installed with the aid of library `pip`.
 
 The `mcglm` library is based on popular libraries of scientific Python 
@@ -170,7 +171,7 @@ The UML diagram \autoref{fig:umlcode} presents `mcglm` library architecture.
 The implementation `mcglm` lies in six classes: `MCGLM`, `MCGLMMean`, `MCGLMVariance`, 
 `MCGLMCAttributes`, `MCGLMParameters` and `MCGLMResults`. Each class has its 
 own scope and responsibilities. For in-depth details, access the code-base 
-https://github.com/jeancmaia/mcglm.
+[https://github.com/jeancmaia/mcglm](https://github.com/jeancmaia/mcglm).
 
 We adopted the `statsmodels` standards of attribute names, the endog argument 
 is a vector, or a matrix, with the realizations of the response variable; the 
@@ -205,11 +206,10 @@ mc_id(), which crafts a matrix for independent realizations of outcome, mc_mixed
 which builds matrices for mixed models, and mc_ma() that build matrices for moving 
 average fitting, popular models in time series analysis. The package `mcglm` of R 
 language implements similar methods to aid on the matrix linear predictor specification. 
-For in-depth details about those matrices, see [@Bonat:2016].
+For in-depth details about those matrices, see @Bonat:2016.
 
 The library can be installed in any Python environment that fulfills 
-the requirements listed on PyPI Webpage; with `pip` assistant is seamless 
-to get the library.
+the requirements listed on PyPI Webpage. 
 
 # Discussion
 

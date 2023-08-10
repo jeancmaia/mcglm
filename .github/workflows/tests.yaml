@@ -1,4 +1,4 @@
-name: MCGLM Package
+name: MCGLM Package tests
 
 on: [push]
 

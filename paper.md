@@ -11,6 +11,7 @@ tags:
 authors:
   - name: Jean Carlos Faoot Maia
     equal-contrib: true
+    orcid: 0009-0001-3747-0669
     affiliation: 1
   - name: Wagner Hugo Bonat
     orcid: 0000-0002-0349-7054
@@ -64,7 +65,7 @@ squares method and its application in linear regression still significantly
 impact statistical modeling and data analysis. 
 
 The statistical modeling literature is concentrate on extending the linear 
-model allowing more realistic assumptions. [-@glm:1972] proposed the 
+model allowing more realistic assumptions. @glm:1972 proposed the 
 Generalized Linear Model (GLM) which relieves the Gaussian assumption 
 allowing for exponential family models [@GLM:2004]. Similarly, 
 the Generalized Additive Model (GAM) [@GAM:1986] eases the linear 
@@ -87,9 +88,9 @@ and correlation coefficients between response variables.
 
 The McGLM framework is available for R users through the 
 open-source package `mcglm` [@Bonat:2016b]; nevertheless, the language 
-Python had not had a standard library until `mcglm`. The foremost 
+Python had not had a standard library until the library `mcglm`. The foremost 
 library statistical analysis in Python is the `statsmodels` 
-[@Seabold:2010]; it implements classical statistical models, such as: GLM, 
+[@Seabold:2010], it implements classical statistical models, such as: GLM, 
 GAM, GEE, and Copulas, however McGLM is not available. Many other libraries 
 stand out for probabilistic programming in Python 
 [@probabilisticp:2018], such as: `PyMC` [@pymc3:2016], `Pyro` 
@@ -109,13 +110,13 @@ McGLMs are specified by five components: linear predictors, link functions,
 variance functions, matrix linear predictors and covariance link functions. 
 In this section, we discuss usual choice for each of these components.
 
-McGLMs allows the specification of usual linear predictors from standard linear 
+McGLMs allow the specification of usual linear predictors from standard linear 
 models including interactions terms and the usual formula notation popular in 
 many statistical software. Similarly, the link function is specified as in the 
 GLM framework usual choices are logit and probit for binary and binomial data, 
-log for count data and identity for continuos real data.
+log for count data, and identity for continuos real data.
 
-The variance function is fundamental to the MCGLMs, as it is related to the 
+The variance function is fundamental to the McGLMs, as it is related to the 
 marginal distribution of the response variable. To underscore some common 
 choices, the variance function power specialized in handling 
 continuous data and defines the Tweedie family of distributions. 
@@ -137,7 +138,7 @@ Function name            & Formula  \\ \hline
 \texttt{Binomial}   & $\mathrm{V}(.;p) = \mu^{p} (1 - \mu)^{p}$\\
 \texttt{Poisson-Tweedie}   & $\mathrm{V}(.;p) = \mu + \mu^{p}$\\ \hline
 \end{tabular}
-\caption{Table with variance functions}
+\caption{Table with variance functions implemented}
 \end{table}
 
 To describe the covariance structure the user specifies the dependency through 
@@ -149,13 +150,13 @@ three covariance link functions namely: identity, inverse and exponential-matrix
 
 # The Python library mcglm
 
-![UML - software architecture.\label{fig:umlcode}](artifacts/classes.png)
+![UML for the library \label{fig:umlcode}](artifacts/classes.png)
 
 The library `mcglm` provides the first Python tool for statistical analysis with 
 the aid of McGLMs. Heavily influenced by its twin R version 
 [@Bonat:2018], the library has ninety-one percent of unit-testing 
 coverage. URLs of source-code and PyPI, the official repository for Python 
-libraries, are https://github.com/jeancmaia/mcglm and https://pypi.org/project/mcglm/. 
+libraries, are (https://github.com/jeancmaia/mcglm) and (https://pypi.org/project/mcglm/). 
 The library `mcglm` can easily be installed with the aid of library `pip`.
 
 The `mcglm` library is based on popular libraries of scientific Python 

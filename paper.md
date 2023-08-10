@@ -53,7 +53,7 @@ authorship, the least squares method established an optimization algorithm
 [@10.1214/aos/1176345451]. According to the Gauss-Markov theorem 
 [@Gauss-Marc], the resulting estimates are optimal and unbiased under 
 linear conditions. This optimization method forms the basis of linear 
-regression, one of the earliest statistical models [@galton:1886; linearregression:1982]. 
+regression, one of the earliest statistical models [@galton:1886; @linearregression:1982]. 
 Linear regression associates a response variable to a group of covariates 
 by employing a linear operation on regression coefficients 
 [@10.2307/2333849]. Three main assumptions for linear regression are 
@@ -64,14 +64,14 @@ squares method and its application in linear regression still significantly
 impact statistical modeling and data analysis. 
 
 The statistical modeling literature is concentrate on extending the linear 
-model allowing more realistic assumptions. @glm:1972 proposed the 
+model allowing more realistic assumptions. [-@glm:1972] proposed the 
 Generalized Linear Model (GLM) which relieves the Gaussian assumption 
 allowing for exponential family models [@GLM:2004]. Similarly, 
 the Generalized Additive Model (GAM) [@GAM:1986] eases the linear 
 assumption by using covariates smooth functions. The Generalized Estimating 
 Equations (GEE) [@Zeger:1988] applies the quasi-likelihood estimating 
 functions to deal with dependent data. Other consolidated frameworks to 
-deal with dependent data include Copulas [@Krupskii:2013; Masarotto:2012], 
+deal with dependent data include Copulas [@Krupskii:2013; @Masarotto:2012], 
 and Mixed Models [@Verbeke:2014], among others. One prevalent aspect 
 of the cited frameworks is that they cannot deal with multiple response variables.
 

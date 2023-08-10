@@ -50,13 +50,13 @@ library manager, such as `pip`.
 
 Dated at the beginning of the 19th century and controversial about actual 
 authorship, the least squares method established an optimization algorithm 
-`[@10.1214/aos/1176345451]`. According to the Gauss-Markov theorem 
-`[@Gauss-Marc]`, the resulting estimates are optimal and unbiased under 
+[@10.1214/aos/1176345451]. According to the Gauss-Markov theorem 
+[@Gauss-Marc], the resulting estimates are optimal and unbiased under 
 linear conditions. This optimization method forms the basis of linear 
-regression, one of the earliest statistical models `[@galton:1886; linearregression:1982]`. 
+regression, one of the earliest statistical models [@galton:1886; linearregression:1982]. 
 Linear regression associates a response variable to a group of covariates 
 by employing a linear operation on regression coefficients 
-`[@10.2307/2333849]`. Three main assumptions for linear regression are 
+[@10.2307/2333849]. Three main assumptions for linear regression are 
 linearity, independent realizations of the response variable, and a Gaussian 
 homoscedastic error with a zero mean. In the subsequent years, many other 
 proposals have aimed to generalize these assumptions; however, the least 
@@ -64,18 +64,18 @@ squares method and its application in linear regression still significantly
 impact statistical modeling and data analysis. 
 
 The statistical modeling literature is concentrate on extending the linear 
-model allowing more realistic assumptions. `@glm:1972` proposed the 
+model allowing more realistic assumptions. @glm:1972 proposed the 
 Generalized Linear Model (GLM) which relieves the Gaussian assumption 
-allowing for exponential family models `[@GLM:2004]`. Similarly, 
-the Generalized Additive Model (GAM) `[@GAM:1986]` eases the linear 
+allowing for exponential family models [@GLM:2004]. Similarly, 
+the Generalized Additive Model (GAM) [@GAM:1986] eases the linear 
 assumption by using covariates smooth functions. The Generalized Estimating 
-Equations (GEE) `[@Zeger:1988]` applies the quasi-likelihood estimating 
+Equations (GEE) [@Zeger:1988] applies the quasi-likelihood estimating 
 functions to deal with dependent data. Other consolidated frameworks to 
-deal with dependent data include Copulas `[@Krupskii:2013; Masarotto:2012]`, 
-and Mixed Models `[@Verbeke:2014]`, among others. One prevalent aspect 
+deal with dependent data include Copulas [@Krupskii:2013; Masarotto:2012], 
+and Mixed Models [@Verbeke:2014], among others. One prevalent aspect 
 of the cited frameworks is that they cannot deal with multiple response variables.
 
-The Multivariate Covariance Generalized Linear Model (McGLM) `[@Bonat:2016]` 
+The Multivariate Covariance Generalized Linear Model (McGLM) [@Bonat:2016] 
 extends the GLM by allowing the multivariate analysis of non-independent 
 responses, such as longitudinal and spatial data. This versatility is the main 
 trait of the McGLM framework. The models are specified using only second-moment 
@@ -86,19 +86,19 @@ and dispersion coefficients, hypothesis tests, goodness-of-fit measurements,
 and correlation coefficients between response variables.
 
 The McGLM framework is available for R users through the 
-open-source package `mcglm` `[@Bonat:2016b]`; nevertheless, the language 
+open-source package `mcglm` [@Bonat:2016b]; nevertheless, the language 
 Python had not had a standard library until `mcglm`. The foremost 
 library statistical analysis in Python is the `statsmodels` 
-`[@Seabold:2010]`; it implements classical statistical models, such as: GLM, 
+[@Seabold:2010]; it implements classical statistical models, such as: GLM, 
 GAM, GEE, and Copulas, however McGLM is not available. Many other libraries 
 stand out for probabilistic programming in Python 
-`[@probabilisticp:2018]`, such as: `PyMC` `[@pymc3:2016]`, `Pyro` 
-`[@pyro:2018]`, and `PyStan` `[@stan:2017]`. Those libraries 
+[@probabilisticp:2018], such as: `PyMC` [@pymc3:2016], `Pyro` 
+[@pyro:2018], and `PyStan` [@stan:2017]. Those libraries 
 distinguish from `statsmodels` on their bayesian paradigm of specifying 
 models. The library `mcglm` specifies the McGLM from a frequentist fashion.
 
 The library `mcglm` provides an easy interface for fitting McGLMs 
-on the standards of `statsmodels` `[@Seabold:2010]` library. It 
+on the standards of `statsmodels` [@Seabold:2010] library. It 
 provides a comprehensive framework for statistical analysis supported by 
 McGLMs, with tools to lead its model specification, fitting, and appropriate 
 report to assess estimates.
@@ -119,11 +119,11 @@ The variance function is fundamental to the MCGLMs, as it is related to the
 marginal distribution of the response variable. To underscore some common 
 choices, the variance function power specialized in handling 
 continuous data and defines the Tweedie family of distributions. 
-According to `@bent:1987` and `@bent:1997`, this family has its 
+According to @bent:1987 and @bent:1997, this family has its 
 special cases: Gaussian (p = 0), Gamma (p = 2), and Inverse Gaussian (p = 3). 
 The variance function extended binomial is a common choice for 
 analyzing bounded data. For fitting count data, the dispersion function presented 
-by `@kokonendji:2015`, called Poisson-Tweedie, is flexible to 
+by @kokonendji:2015, called Poisson-Tweedie, is flexible to 
 capture notable models, such as: Hermite (p = 0), Neyman Type A (p = 1), 
 Negative Binomial (p = 2) and Poisson inverse Gaussian (p = 3). The following 
 table summarizes the mentioned variance functions:
@@ -144,7 +144,7 @@ To describe the covariance structure the user specifies the dependency through
 the Z matrices in the matrix linear predictor. Many of the classical statistical 
 models are replicable by setting tailored Z matrices. To cite a few, 
 mixed models, moving averages, and compound symmetry. For more details, see 
-`@Bonat:2016` and `@Bonat:2018`. Finally, `@Bonat:2018` proposed 
+@Bonat:2016 and @Bonat:2018. Finally, @Bonat:2018 proposed 
 three covariance link functions namely: identity, inverse and exponential-matrix.
 
 # The Python library mcglm
@@ -153,17 +153,17 @@ three covariance link functions namely: identity, inverse and exponential-matrix
 
 The library `mcglm` provides the first Python tool for statistical analysis with 
 the aid of McGLMs. Heavily influenced by its twin R version 
-`[@Bonat:2018]`, the library has ninety-one percent of unit-testing 
+[@Bonat:2018], the library has ninety-one percent of unit-testing 
 coverage. URLs of source-code and PyPI, the official repository for Python 
 libraries, are https://github.com/jeancmaia/mcglm and https://pypi.org/project/mcglm/. 
 The library `mcglm` can easily be installed with the aid of library `pip`.
 
 The `mcglm` library is based on popular libraries of scientific Python 
-programming: The `NumPy` `[@harris2020array]`, `scipy` `[@2020SciPy-NMeth]`, 
+programming: The `NumPy` [@harris2020array], `scipy` [@2020SciPy-NMeth], 
 and `scipy.sparse`. We inherit `statsmodels`'s interface and deliver a 
 code library akin to their standards API. Object-oriented programming is 
 another cornerstone for the library `mcglm`; the SOLID principles 
-`[@Madasu:2015]` helped to create a readable and extensible code-base. 
+[@Madasu:2015] helped to create a readable and extensible code-base. 
 The UML diagram \autoref{fig:umlcode} presents `mcglm` library architecture.
 
 The implementation `mcglm` lies in six classes: `MCGLM`, `MCGLMMean`, `MCGLMVariance`, 
@@ -204,7 +204,7 @@ mc_id(), which crafts a matrix for independent realizations of outcome, mc_mixed
 which builds matrices for mixed models, and mc_ma() that build matrices for moving 
 average fitting, popular models in time series analysis. The package `mcglm` of R 
 language implements similar methods to aid on the matrix linear predictor specification. 
-For in-depth details about those matrices, see `[@Bonat:2016]`.
+For in-depth details about those matrices, see [@Bonat:2016].
 
 The library can be installed in any Python environment that fulfills 
 the requirements listed on PyPI Webpage; with `pip` assistant is seamless 
@@ -232,10 +232,5 @@ library's ability to analyze multiple responses sets it apart. We suggest conduc
 comparative analysis of statistical tools, exploring different model specifications 
 in the future. With `statsmodels` implementing complementary models, Python is a suitable 
 environment for performing this analysis.
-
-# Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References

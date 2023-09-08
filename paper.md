@@ -86,6 +86,8 @@ and the matrix linear predictor. The model allows the assessment of regression
 and dispersion coefficients, hypothesis tests, goodness-of-fit measurements, 
 and correlation coefficients between response variables.
 
+# Statement of need
+
 The McGLM framework is available for R users through the 
 open-source package `mcglm` [@Bonat:2016b]; nevertheless, the language 
 Python had not had a standard library until the library `mcglm`. The foremost 

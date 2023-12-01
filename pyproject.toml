@@ -1,19 +1,17 @@
 [tool.poetry]
 name = "mcglm"
-version = "0.2.1"
+version = "0.2.2"
 description = "Multivariate Covariance Generalized Linear Models"
-authors = ["Jean Carlos Maia <jeanclmaia@gmail.com>"]
+authors = ["Jean Carlos Faoot Maia <jeanclmaia@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<=3.9"
+python = ">=3.9"
 patsy = "^0.5.2"
 matplotlib = "^3.5.2"
 statsmodels = "^0.13.2"
-scipy = "1.7.1"
-numpy = "1.22"
 pandas = "^1.3.3"
-seaborn = "^0.11.2"
+numpy = "^1.25"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

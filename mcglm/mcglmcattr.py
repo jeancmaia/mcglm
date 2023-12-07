@@ -689,7 +689,7 @@ class MCGLMCAttributes:
     ):
         return self.__generate_variance(variance_type, mu, power, Ntrial)
 
-    def __generate_variance(self, variance_type, mu, power=0, Ntrial=1):
+    def __generate_variance(self, variance_type, mu, power=1, Ntrial=1):
         """Method to apply the variance function on the mean values.
 
         Parameters

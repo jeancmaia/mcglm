@@ -544,14 +544,13 @@ class MCGLMCAttributes:
             ]
             if not power_fixed:
                 if variance in ["tweedie", "binomialP"]:
- 
+
                     sigma_derivative_power = mc_sandwich_power(
                         omegas,
                         variance_components.get("variance_sqrt_output"),
                         variance_components.get("derivative_variance_sqrt_power"),
                     )
                     sigma_derivative.insert(0, sigma_derivative_power)
-                    #sigma_derivative.append(sigma_derivative_power)
 
                 elif variance == "binomialPQ":
                     sigma_derivative_p = mc_sandwich(
@@ -709,10 +708,20 @@ class MCGLMCAttributes:
         """
         if variance_type == "power":
             return self.__power_variance(mu, power)
+        elif variance_type == "constant":
+            return self.__variance_constant(mu, power)
         elif variance_type == "binomialP":
             return self.__binomialp_variance(mu, power, Ntrial)
         elif variance_type == "binomialPQ":
             return self.__binomialpq_variance(mu, power, Ntrial)
+
+    def __variance_constant(self, mu, power):
+        mu_power = mu**power
+        n_len = len(mu)
+
+        variance_sqrt_output = diagonal(n=n_len, values=mu_power)
+
+        return dict(variance_sqrt_output=variance_sqrt_output)
 
     def __power_variance(self, mu, power):
         mu_power = mu**power

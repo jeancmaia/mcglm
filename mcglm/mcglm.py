@@ -501,7 +501,13 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             if self._power_fixed[0]:
                 return new_regression, new_dispersion, rho, power, [new_dispersion]
             else:
-                return new_regression, new_dispersion, rho, [new_dispersion[0]], [new_dispersion[1:].tolist()]
+                return (
+                    new_regression,
+                    new_dispersion,
+                    rho,
+                    [new_dispersion[0]],
+                    [new_dispersion[1:].tolist()],
+                )
 
         if (isinstance(rho, list)) or (isinstance(rho, np.ndarray)):
             new_rho = new_dispersion[0 : len(rho)]
@@ -528,7 +534,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
                 additions += 1
             stack_index += additions
             new_tau.append(temp_tau)
-            
+
         return new_regression, new_dispersion, new_rho, new_power, new_tau
 
     def __create_dispersion_vector(self, rho, power, tau):
@@ -905,7 +911,7 @@ class MCGLMResults(GLMResults):
         self._X = X
         self._ntrial = ntrial
         self.params = None
-        #self.bse = None
+        # self.bse = None
 
         self._use_t = False
         self.model = None
@@ -975,7 +981,7 @@ class MCGLMResults(GLMResults):
             )
 
             variance = None
-            if self._variance_list[index] in ("binomialP", "binomialPQ"):
+            if self._variance_list[index] in ("binomialP", "binomialPQ", "constant"):
                 variance = self._variance_list[index]
             else:
                 variance = "power"
@@ -1225,7 +1231,7 @@ class MCGLMResults(GLMResults):
             self.params = np.array(self._dispersion[target_index]["scalelist"])
             self.normalized_cov_params = self._dispersion_vcov[target_index]
 
-            #self.bse = np.sqrt(np.diag(self.normalized_cov_params))
+            # self.bse = np.sqrt(np.diag(self.normalized_cov_params))
             smry = self.__add_dispersion(smry)
             self.params = np.array([self._dispersion[target_index]["power"]])
             self.normalized_cov_params = self.power_vcov[target_index]

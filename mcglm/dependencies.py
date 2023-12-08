@@ -20,7 +20,19 @@ def mc_id(data=None):
 def mc_ma(id=None, time=None, data=None, order=1):
     """
     mc_ma method retrieves the Z components for matrix linear predictor associated with Autoregressive models(Feller, W. (1957). An introduction to probability theory and its applications / William Feller.
-    Wiley New York, 2nd ed. edition.)
+    Wiley New York, 2nd ed. edition.).
+    
+    To ilustrate, in a three-row example, a MA(1) produce the following dependence matrix:
+    
+    [[0, 1, 0], 
+    [1, 0, 1], 
+    [0, 1, 0]]
+     
+    A MA(2) would produce:
+    
+    [[0, 0, 1],
+    [0, 0, 0],
+    [1, 0, 0]]
     """
 
     def diagonal_position(indexes=None, k=1):

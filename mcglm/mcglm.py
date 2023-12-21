@@ -195,9 +195,9 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         y_names = list()
 
         if n_targets == 1:
-            X = [exog]
-            y_values = [endog.values]
-            y_names = [endog.name]
+            X = [self._reformat_dataset(exog)]
+            y_values = [self._reformat_dataset(endog).values]
+            y_names = [self._reformat_dataset(endog).name]
             z = [z]
             ntrial = [ntrial]
             tau = [[0 for i in range(len(z[0]))]]
@@ -226,8 +226,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             for index in range(n_targets):
                 tau.append([0 for i in range(len(z[index]))])
                 beta.append([np.ones(exog[index].shape[1])])
-                y_values.append(endog[index].values)
-                y_names.append(endog[index].name)
+                y_values.append(self._reformat_dataset(endog[index]).values)
+                y_names.append(self._reformat_dataset(endog[index]).name)
 
                 if set_offset:
                     offset_list.append(None)
@@ -261,6 +261,15 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             power_fixed_list,
             power_list,
         )
+        
+    def _reformat_dataset(self, dataset):
+        if isinstance(dataset, np.ndarray):
+            if len(dataset.shape) == 1:
+                return pd.Series(dataset)
+            else:
+                return pd.DataFrame(dataset)    
+        return dataset
+
 
     def fit(self):
         """The interface to run the inference for MCGLM statistical model."""

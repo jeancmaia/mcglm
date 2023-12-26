@@ -6,7 +6,7 @@ authors = ["Jean Carlos Faoot Maia <jeanclmaia@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = ">=3.9,<4.0"
 patsy = "^0.5.2"
 matplotlib = "^3.5.2"
 statsmodels = "^0.13.2"
@@ -21,6 +21,8 @@ jupyter = "^1.0.0"
 pylint = "^2.14.3"
 jupyterlab = "^3.6.1"
 seaborn = "^0.13.0"
+Sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

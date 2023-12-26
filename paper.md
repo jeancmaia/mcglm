@@ -39,7 +39,7 @@ analysis in Python.
 The `mcglm` library provides a comprehensive platform for data analysis using 
 the McGLM framework. Built upon the established standards of the `statsmodels` 
 library, it provides a comprehensive summary report for fitting assessment, 
-including crucial elements such as regression and dispersion coefficients, 
+including elementary parameters such as regression and dispersion coefficients, 
 confidence intervals, hypothesis testing results, residual analysis, 
 goodness-of-fit measurements, and correlation coefficients between outcomes. 
 In addition, the library provides a rich set of link and variance functions 
@@ -95,13 +95,13 @@ statistical analysis in Python with the aid of McGLM.
 The McGLM framework is available for R users through the open-source package 
 `mcglm` [@Bonat:2016b]; nevertheless, the language Python did not have a 
 standard library until the library `mcglm`. The foremost library statistical 
-analysis in Python is the `statsmodels` [@Seabold:2010]; it implements 
-classical statistical models, such as GLM, GAM, GEE, and Copulas; however, 
-McGLM is not available. Many other libraries stand out for probabilistic 
-programming in Python [@probabilisticp:2018], such as: `PyMC` [@pymc3:2016], 
-`Pyro` [@pyro:2018], and `PyStan` [@stan:2017]. Those libraries distinguish 
-from `statsmodels` on their Bayesian paradigm of specifying models. The 
-library `mcglm` specifies the McGLM in a frequentist fashion.
+analysis in Python is the `statsmodels` [@Seabold:2010]. It implements 
+classical statistical models, such as GLM, GAM, GEE, and Copulas. Many other 
+libraries stand out for probabilistic programming in Python [@probabilisticp:2018], 
+such as: `PyMC` [@pymc3:2016], `Pyro` [@pyro:2018], and `PyStan` [@stan:2017]. 
+Those libraries distinguish from `statsmodels` on their Bayesian paradigm 
+of specifying models. The library `mcglm` specifies the McGLM in a frequentist 
+fashion.
 
 The library `mcglm` provides an easy interface for fitting McGLMs on the 
 standards of the `statsmodels` [@Seabold:2010] library. It provides a 
@@ -119,7 +119,7 @@ of these components.
 McGLM offers the flexibility to specify typical linear predictors, 
 including the usual formula notation popular in many statistical 
 software. In alignment with the GLM framework, the link function 
-encompasses customary choices like logit and probit for binary and 
+encompasses usual choices like logit and probit for binary and 
 binomial data, log for count data, and identity for continuous 
 accurate data. The variance function is fundamental to the McGLMs, 
 as it is related to the marginal distribution of the response 
@@ -133,7 +133,8 @@ analyzing bounded data. For fitting count data, the dispersion
 function presented by @kokonendji:2015, called Poisson-Tweedie, is 
 flexible enough to capture notable models, such as Hermite (p = 0), 
 Neyman Type A (p = 1), Negative Binomial (p = 2) and Poisson inverse 
-Gaussian (p = 3). The following table summarizes the mentioned variance functions:
+Gaussian (p = 3). The following table summarizes the mentioned variance 
+functions:
 
 \begin{table}[h]
 \centering
@@ -147,13 +148,13 @@ Function name            & Formula  \\ \hline
 \caption{Table with variance functions implemented}
 \end{table}
 
-To describe the covariance structure, the user specifies the dependency 
-through the Z matrices in the matrix linear predictor. Many of the 
+The user specifies the dependency through the Z matrices in the matrix 
+linear predictor to describe the covariance structure. Many of the 
 classical statistical models are replicable by setting tailored Z 
 matrices. To cite a few, mixed models, moving averages, and compound 
 symmetry. For more details, see @Bonat:2016 and @Bonat:2018. Finally, 
-@Bonat:2018 proposed three covariance link functions: identity, inverse, 
-and exponential-matrix.
+@Bonat:2018 proposed three covariance link functions: identity, 
+inverse, and exponential-matrix.
 
 # The Python library mcglm
 
@@ -164,8 +165,9 @@ analysis with the aid of McGLMs. Heavily influenced by its twin R
 version [@Bonat:2018], the library has ninety-one percent of 
 unit-testing coverage. URLs of source-code and PyPI, the official 
 repository for Python libraries, are [https://github.com/jeancmaia/mcglm 
-(https://github.com/jeancmaia/mcglm) and [https://pypi.org/project/mcglm/](https://pypi.org/project/mcglm/). 
-The library `mcglm` can easily be installed using the library `pip.`
+(https://github.com/jeancmaia/mcglm) and [https://pypi.org/project/mcglm/]
+(https://pypi.org/project/mcglm/). The library `mcglm` can easily be installed 
+using the library `pip.`
 
 The `mcglm` library is based on popular libraries of scientific Python 
 programming: The `NumPy` [@harris2020array], `scipy` [@2020SciPy-NMeth], 

@@ -38,7 +38,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
     offset : array_like or None
         Offset for continuous or count. In multiple responses, user must pass values as list.   
     ntrial : array_like or None
-        ntrial for binomial responses. In multiple responses, user must pass values as list.
+        The parameter ntrial is key for binomial responses. In multiple responses, the user must pass values as a list.
     power_fixed : array_like or None
         The parameter power is key for Tweedie-like distributions, as it defines the overall behavior of the model. The library mcglm can also estimate the power parameter if power_fixed equals True. Therefore, in the case of variance functions, either tweedie, geom_tweedie, or poisson_tweedie. In multiple responses, the user must pass values as a list.
     maxiter : float or None

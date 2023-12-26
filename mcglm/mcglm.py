@@ -37,18 +37,18 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.   
     offset : array_like or None
         Offset for continuous or count. In multiple responses, user must pass values as list.   
-    Ntrial : array_like or None
-        Ntrial for binomial responses. In multiple responses, user must pass values as list.
+    ntrial : array_like or None
+        The parameter ntrial is key for binomial responses. In multiple responses, the user must pass values as a list.
     power_fixed : array_like or None
-        Parameter that allows estimation of power when variance functions is either tweedie, geom_tweedie or poisson_tweedie. In multiple responses, user must pass values as list. 
+        The parameter power is key for Tweedie-like distributions, as it defines the overall behavior of the model. The library mcglm can also estimate the power parameter if power_fixed equals True. Therefore, in the case of variance functions, either tweedie, geom_tweedie, or poisson_tweedie. In multiple responses, the user must pass values as a list.
     maxiter : float or None
-        Number max of iterations. Defaults to 200.
+        The parameter maxiter defines the total maximum possible cycles of iterations for the optimization process. Defaults to 200.
     tol : float or None
-        Threshold of minimum absolute change on paramaters. Defaults to 0.0001.
+        The parameter tol defines the minimum absolute change on parameters to run another optimization cycle. If the absolute updating value is lower than tol, the optimization process stops. Defaults to 0.0001.
     tuning : float or None
-        Step size parameter. Defaults to 0.5.
+        The optimization process leverages two second-order algorithms for the estimation process. The parameter tuning is an additional component guiding the step size of the process, acting closely to the second-order derivatives. Defaults to 0.5.
     weights : array_like or None
-        Weight matrix. Defaults to None.
+        The parameter weights allows one to specificy sample weights.
         
     Examples
     ----------

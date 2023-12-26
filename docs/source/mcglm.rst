@@ -1,5 +1,14 @@
-mcglm package
+mcglm library
 =============
+
+mcglm.mcglm module
+------------------
+
+.. automodule:: mcglm.mcglm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Submodules
 ----------
@@ -12,13 +21,6 @@ mcglm.dependencies module
    :undoc-members:
    :show-inheritance:
 
-mcglm.mcglm module
-------------------
-
-.. automodule:: mcglm.mcglm
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 mcglm.mcglmcattr module
 -----------------------

@@ -4,7 +4,7 @@ All rights reserved.
 Copyright (c) 2009-2018 statsmodels Developers.
 All rights reserved.
 
-Copyright (c) 2022, Jean C.Maia 
+Copyright (c) 2022, Jean Carlos F.Maia 
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above

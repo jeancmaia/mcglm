@@ -30,7 +30,7 @@ modelresults.summary()
 ```
 
 
-##### Workflow for developers/contributors
+#### Workflow for developers/contributors
 
 Contributions are key for the `mcglm` library to continue expanding. We need your help to make it a fabulous tool.
 

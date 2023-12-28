@@ -29,3 +29,30 @@ modelresults = MCGLM(endog=y, exog=X).fit()
 modelresults.summary()
 ```
 
+
+#### Workflow for developers/contributors
+
+Contributions are key for the `mcglm` library to continue expanding. We need your help to make it a fabulous tool.
+
+In order to submit new features or bug fixes, one must open a regular PR and ask for peer review. Currently, it is possible to include "jeancmaia" as a reviewer. Furthermore, developing the codebase aligned with the [PEP 8 style](https://peps.python.org/pep-0008/) and comprehensive unit tests are mandatory.
+
+We recommend using the [poetry](https://python-poetry.org/) to create a local Python environment.
+
+```
+poetry install
+```
+
+Before pushing to GitHub, run the following commands:
+
+
+1. To format the code base with black.
+
+```
+poetry run black mcglm
+```
+
+2. To run local tests to ensure realiablity of code.
+
+```
+poetry run python tests
+```

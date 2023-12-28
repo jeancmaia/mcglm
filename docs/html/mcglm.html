@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mcglm library &mdash; mcglm 0.2.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=6ffd866b"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="mcglm" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            mcglm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">mcglm</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">mcglm library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm.mcglm">mcglm.mcglm module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mcglm.MCGLM"><code class="docutils literal notranslate"><span class="pre">MCGLM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mcglm.MCGLMParameters"><code class="docutils literal notranslate"><span class="pre">MCGLMParameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mcglm.MCGLMResults"><code class="docutils literal notranslate"><span class="pre">MCGLMResults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm.dependencies">mcglm.dependencies module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.dependencies.mc_id"><code class="docutils literal notranslate"><span class="pre">mc_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.dependencies.mc_ma"><code class="docutils literal notranslate"><span class="pre">mc_ma()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.dependencies.mc_mixed"><code class="docutils literal notranslate"><span class="pre">mc_mixed()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm.mcglmcattr">mcglm.mcglmcattr module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mcglmcattr.MCGLMCAttributes"><code class="docutils literal notranslate"><span class="pre">MCGLMCAttributes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm.mcglmmean">mcglm.mcglmmean module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mcglmmean.MCGLMMean"><code class="docutils literal notranslate"><span class="pre">MCGLMMean</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm.mcglmvariance">mcglm.mcglmvariance module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mcglmvariance.MCGLMVariance"><code class="docutils literal notranslate"><span class="pre">MCGLMVariance</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm.utils">mcglm.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.utils.diagonal"><code class="docutils literal notranslate"><span class="pre">diagonal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.utils.mc_matrix_linear_predictor"><code class="docutils literal notranslate"><span class="pre">mc_matrix_linear_predictor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.utils.mc_sandwich"><code class="docutils literal notranslate"><span class="pre">mc_sandwich()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.utils.mc_sandwich_csr"><code class="docutils literal notranslate"><span class="pre">mc_sandwich_csr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.utils.mc_sandwich_power"><code class="docutils literal notranslate"><span class="pre">mc_sandwich_power()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.utils.mc_sandwich_power_csr"><code class="docutils literal notranslate"><span class="pre">mc_sandwich_power_csr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-mcglm">Module contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.MCGLM"><code class="docutils literal notranslate"><span class="pre">MCGLM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.MCGLMCAttributes"><code class="docutils literal notranslate"><span class="pre">MCGLMCAttributes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.MCGLMMean"><code class="docutils literal notranslate"><span class="pre">MCGLMMean</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.MCGLMVariance"><code class="docutils literal notranslate"><span class="pre">MCGLMVariance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mc_id"><code class="docutils literal notranslate"><span class="pre">mc_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mc_ma"><code class="docutils literal notranslate"><span class="pre">mc_ma()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcglm.mc_mixed"><code class="docutils literal notranslate"><span class="pre">mc_mixed()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mcglm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">mcglm</a></li>
+      <li class="breadcrumb-item active">mcglm library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/mcglm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mcglm-library">
+<h1>mcglm library<a class="headerlink" href="#mcglm-library" title="Link to this heading"></a></h1>
+<section id="module-mcglm.mcglm">
+<span id="mcglm-mcglm-module"></span><h2>mcglm.mcglm module<a class="headerlink" href="#module-mcglm.mcglm" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntrial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tuning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLM" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcglm.mcglmmean.MCGLMMean" title="mcglm.mcglmmean.MCGLMMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMMean</span></code></a>, <a class="reference internal" href="#mcglm.mcglmvariance.MCGLMVariance" title="mcglm.mcglmvariance.MCGLMVariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMVariance</span></code></a></p>
+<p>MCGLM class that implements MCGLM stastical models. (Bonat, Jørgensen 2015)</p>
+<p>It extends GLM for multi-responses and dependent components by fitting second-moment assumptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endog</strong> (<em>array_like</em>) – 1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list.</p></li>
+<li><p><strong>exog</strong> (<em>array_like</em>) – A dataset with the endogenous matrix in a Numpy fashion. Since the library doesn’t set an intercept by default, the user must add it. In the case of multiple responses, the user must pass the design matrices as a python list.</p></li>
+<li><p><strong>z</strong> (<em>array_like</em>) – List with matrices components of the linear covariance matrix.</p></li>
+<li><p><strong>link</strong> (<em>array_like</em><em>, </em><em>string</em><em> or </em><em>None</em>) – Specification for the link function. The MCGLM library implements the following options: identity, logit, power, log, probit, cauchy, cloglog, loglog, negativebinomial. In the case of None, the library chooses the identity link. In multiple responses, user must pass values as list.</p></li>
+<li><p><strong>variance</strong> (<em>array_like</em><em>, </em><em>string</em><em> or </em><em>None</em>) – Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.</p></li>
+<li><p><strong>offset</strong> (<em>array_like</em><em> or </em><em>None</em>) – Offset for continuous or count. In multiple responses, user must pass values as list.</p></li>
+<li><p><strong>ntrial</strong> (<em>array_like</em><em> or </em><em>None</em>) – The parameter ntrial is key for binomial responses. In multiple responses, the user must pass values as a list.</p></li>
+<li><p><strong>power_fixed</strong> (<em>array_like</em><em> or </em><em>None</em>) – The parameter power is key for Tweedie-like distributions, as it defines the overall behavior of the model. The library mcglm can also estimate the power parameter if power_fixed equals True. Therefore, in the case of variance functions, either tweedie, geom_tweedie, or poisson_tweedie. In multiple responses, the user must pass values as a list.</p></li>
+<li><p><strong>maxiter</strong> (<em>float</em><em> or </em><em>None</em>) – The parameter maxiter defines the total maximum possible cycles of iterations for the optimization process. Defaults to 200.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em> or </em><em>None</em>) – The parameter tol defines the minimum absolute change on parameters to run another optimization cycle. If the absolute updating value is lower than tol, the optimization process stops. Defaults to 0.0001.</p></li>
+<li><p><strong>tuning</strong> (<em>float</em><em> or </em><em>None</em>) – The optimization process leverages two second-order algorithms for the estimation process. The parameter tuning is an additional component guiding the step size of the process, acting closely to the second-order derivatives. Defaults to 0.5.</p></li>
+<li><p><strong>weights</strong> (<em>array_like</em><em> or </em><em>None</em>) – The parameter weights allows one to specificy sample weights.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">scotland</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">exog</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exog</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">GLM</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">endog</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">exog</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="p">[</span><span class="n">mc_id</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exog</span><span class="p">)],</span>
+<span class="gp">... </span>                     <span class="n">link</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="s2">&quot;tweedie&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                     <span class="n">power</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">power_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">mu</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">pearson_residuals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">aic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">bic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">loglikelihood</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>MCGLM is a brand new model, which provides a solid statistical model for fitting multi-responses non-gaussian, dependent, or independent data based on second-moment assumptions. When a user instantiates an mcglm object, she must specify attributes such as link, variance, and z matrices; it will drive the overall behavior of the model.
+For more details, check articles and documentation provided.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLM.df_model">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_model</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLM.df_model" title="Link to this definition"></a></dt>
+<dd><p>Calculates the degree of freedom for the model.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLM.df_resid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_resid</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLM.df_resid" title="Link to this definition"></a></dt>
+<dd><p>Calculates the degree of freedom for the model residuals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLM.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLM.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLM.fit" title="Link to this definition"></a></dt>
+<dd><p>The interface to run the inference for MCGLM statistical model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMParameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLMParameters</span></span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLMParameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLMParameters" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>According to MCGLM specification, grounded for frequentist inference traits, the estimation of resulting parameters converge asymptotically to a gaussian distribution with tuple mean-variance = (actual parameters, inverse of matrix Godambe). This property allows the calculation of pivotal traits regarding the parameters, such as: hypothesis testing and confidence interval.</p>
+<p>This class implements every method related to this trait.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMParameters.generate_var_variability">
+<span class="sig-name descname"><span class="pre">generate_var_variability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_inv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_comp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLMParameters.generate_var_variability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLMParameters.generate_var_variability" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLMResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalized_var_cov</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_fixed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_log_likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_resid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntrial</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLMResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLMResults" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">GLMResults</span></code></p>
+<p>MCGLM Class for generating and manipulating results of mcglm training. The main output goes by the method summary(), the classical statsmodels output. Therefore, the user can access the attributes “aic”, “bic” e loglikelihood.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>GLMResults</strong> – Class of statsmodels library for presenting results of GLM.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.aic">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aic</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.aic" title="Link to this definition"></a></dt>
+<dd><p>Akaike Information Criterion
+-2 * <cite>llf</cite> + 2 * (<cite>df_model</cite> + 1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.anova">
+<span class="sig-name descname"><span class="pre">anova</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indexes_covariates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[1,</span> <span class="pre">2,</span> <span class="pre">2,</span> <span class="pre">2,</span> <span class="pre">2]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariate_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[['x1',</span> <span class="pre">'x2']]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLMResults.anova"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.anova" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.bic">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bic</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.bic" title="Link to this definition"></a></dt>
+<dd><p>Bayes Information Criterion</p>
+<p><cite>deviance</cite> - <cite>df_resid</cite> * log(<cite>nobs</cite>)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The current definition is base don the deviance rather than the
+log-likelihood. This is not consistent with the AIC definition,
+and after 0.13 both will make use of the log-likelihood definition.</p>
+</div>
+<p class="rubric">Notes</p>
+<p>The log-likelihood version is defined
+-2 * <cite>llf</cite> + (<cite>df_model</cite> + 1)*log(n)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.bse">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bse</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.bse" title="Link to this definition"></a></dt>
+<dd><p>The standard errors of the parameter estimates.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.loglikelihood">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loglikelihood</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.loglikelihood" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.mu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.mu" title="Link to this definition"></a></dt>
+<dd><p>See GLM docstring.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.pearson_residuals">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pearson_residuals</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.pearson_residuals" title="Link to this definition"></a></dt>
+<dd><p>Pearson residuals.  The Pearson residuals are defined as
+(<cite>endog</cite> - <cite>mu</cite>)/sqrt(VAR(<cite>mu</cite>)) where VAR is the distribution
+specific variance function.  See statsmodels.families.family and
+statsmodels.families.varfuncs for more information.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.pvalues">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pvalues</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.pvalues" title="Link to this definition"></a></dt>
+<dd><p>The two-tailed p values for the t-stats of the params.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLMResults.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.summary" title="Link to this definition"></a></dt>
+<dd><p>It generates the summary report as the sketch of classical “statsmodels” library. The summary shows all parameters found thoroughly, for each response.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.tvalues">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tvalues</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.tvalues" title="Link to this definition"></a></dt>
+<dd><p>Return the t-statistic for a given parameter estimate.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.mcglm.MCGLMResults.vcov">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vcov</span></span><a class="headerlink" href="#mcglm.mcglm.MCGLMResults.vcov" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-mcglm.dependencies">
+<span id="mcglm-dependencies-module"></span><h2>mcglm.dependencies module<a class="headerlink" href="#module-mcglm.dependencies" title="Link to this heading"></a></h2>
+<p>An extension of MCGLM library to provide three options for matrix linear predictor: mc_id, mc_ma, and mc_mixed.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.dependencies.mc_id">
+<span class="sig-prename descclassname"><span class="pre">mcglm.dependencies.</span></span><span class="sig-name descname"><span class="pre">mc_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/dependencies.html#mc_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.dependencies.mc_id" title="Link to this definition"></a></dt>
+<dd><p>mc_id method retrieves a numpy diagonal matrix with data length of the original matrix</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.dependencies.mc_ma">
+<span class="sig-prename descclassname"><span class="pre">mcglm.dependencies.</span></span><span class="sig-name descname"><span class="pre">mc_ma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/dependencies.html#mc_ma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.dependencies.mc_ma" title="Link to this definition"></a></dt>
+<dd><p>mc_ma method retrieves the Z components for matrix linear predictor associated with Autoregressive models(Feller, W. (1957). An introduction to probability theory and its applications / William Feller.
+Wiley New York, 2nd ed. edition.).</p>
+<p>To ilustrate, in a three-row example, a MA(1) produce the following dependence matrix:</p>
+<p>[[0, 1, 0],
+[1, 0, 1],
+[0, 1, 0]]</p>
+<p>A MA(2) would produce:</p>
+<p>[[0, 0, 1],
+[0, 0, 0],
+[1, 0, 0]]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.dependencies.mc_mixed">
+<span class="sig-prename descclassname"><span class="pre">mcglm.dependencies.</span></span><span class="sig-name descname"><span class="pre">mc_mixed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/dependencies.html#mc_mixed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.dependencies.mc_mixed" title="Link to this definition"></a></dt>
+<dd><p>mc_mixed retrieves the components for matrix linear predictor associated with mixed models(Demidenko E (2013). Mixed Models: Theory and Applications with R. John Wiley &amp; Sons. doi:10.1002/0471728438.).</p>
+</dd></dl>
+
+</section>
+<section id="module-mcglm.mcglmcattr">
+<span id="mcglm-mcglmcattr-module"></span><h2>mcglm.mcglmcattr module<a class="headerlink" href="#module-mcglm.mcglmcattr" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.mcglmcattr.MCGLMCAttributes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.mcglmcattr.</span></span><span class="sig-name descname"><span class="pre">MCGLMCAttributes</span></span><a class="reference internal" href="_modules/mcglm/mcglmcattr.html#MCGLMCAttributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmcattr.MCGLMCAttributes" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The class “MCGLMCAttributes” has the sake of calculating every C operations, used on throughout adjustments of mean and variance. This class has two interfaces, “c_inverse” and “c_complete”; one for each of two adjustment steps of MCGLM.</p>
+<p>The interface “c_inverse” crafts only inverse C, and the “c_complete” adds its derivatives and other features onto response. A Quasi-likelihood estimation needs only the inverse of “C” matrix. Therefore c_inverse saves computational resources by avoiding unnecessary operations on mean step adjustment.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglmcattr.MCGLMCAttributes.c_complete">
+<span class="sig-name descname"><span class="pre">c_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmcattr.html#MCGLMCAttributes.c_complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmcattr.MCGLMCAttributes.c_complete" title="Link to this definition"></a></dt>
+<dd><p>A method to generate the whole list of C components, explicitly made for the variance treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>array_like</em>) – A vetor with mean parameters.</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – Power parameter.</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Correlation parameter.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple with every component of C.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglmcattr.MCGLMCAttributes.c_inverse">
+<span class="sig-name descname"><span class="pre">c_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmcattr.html#MCGLMCAttributes.c_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmcattr.MCGLMCAttributes.c_inverse" title="Link to this definition"></a></dt>
+<dd><p>A method to generate only the inverse of the C matrix, explicitly made for the mean treatment step. This method interacts with sigma and omega amenities by list of each parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>array_like</em>) – A vetor with mean parameters.</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – Power parameter.</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Correlation parameter.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>array_like or tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The inverse of C matrix and its components.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mcglm.mcglmmean">
+<span id="mcglm-mcglmmean-module"></span><h2>mcglm.mcglmmean module<a class="headerlink" href="#module-mcglm.mcglmmean" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.mcglmmean.MCGLMMean">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.mcglmmean.</span></span><span class="sig-name descname"><span class="pre">MCGLMMean</span></span><a class="reference internal" href="_modules/mcglm/mcglmmean.html#MCGLMMean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmmean.MCGLMMean" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcglm.mcglmcattr.MCGLMCAttributes" title="mcglm.mcglmcattr.MCGLMCAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMCAttributes</span></code></a></p>
+<p>MCGLMMean is the class for the first moment adjustment within MCGLM inference. It handles lifecycle completely, ranging from mu and derivatives to quasi-likelihood calculations.
+This class has two interfaces: ‘calculate_mean_features’ which calculates mu attributes, and ‘update_beta’ that applies quasi-likelihood estimation and retrieves a new beta.
+This class implements the Estimating Equation Quasi-score (Wedderburn, 1974) and the second-order optimization algorithm (Jennrich, 1969) and(Widyaningsih et al., 2017).</p>
+<p class="rubric">References</p>
+<p>Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized linear models, and the Gauss—Newton method. Biometrika, 61(3):439–447.</p>
+<p>Jennrich, R. I. (1969). A Newton-Raphson algorithm for maximum likelihood factor analysis. Psychometrika, 34.</p>
+<p>Widyaningsih, P., Saputro, D. e Putri, A. (2017). Fisher scoring method for parameter estimation of geographically weighted ordinal logistic regression (gwolr) model. Journal of Physics: Conference Series, 855:012060.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglmmean.MCGLMMean.calculate_mean_features">
+<span class="sig-name descname"><span class="pre">calculate_mean_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmmean.html#MCGLMMean.calculate_mean_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmmean.MCGLMMean.calculate_mean_features" title="Link to this definition"></a></dt>
+<dd><p>Base method to calculate every attribute related to the mean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>link</strong> (<em>str</em>) – Link function.</p></li>
+<li><p><strong>beta</strong> (<em>array-like</em>) – Regression Parameters.</p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Matrix with covariates.</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em><em>)</em>) – Offset add value. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mean attributes, the raw mean and its derivatives.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglmmean.MCGLMMean.update_beta">
+<span class="sig-name descname"><span class="pre">update_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmmean.html#MCGLMMean.update_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmmean.MCGLMMean.update_beta" title="Link to this definition"></a></dt>
+<dd><p>The method update_beta takes the current beta, leverages the quasi-likelihood estimator to calculate the next regression parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>array-like</em>) – Regression Parameters.</p></li>
+<li><p><strong>W</strong> (<em>array-like</em>) – Weight matrix</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – Power parameter</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Correlation parameters</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple with the new regression parameters, the quasi-score parameter, sensitivity and the variability matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mcglm.mcglmvariance">
+<span id="mcglm-mcglmvariance-module"></span><h2>mcglm.mcglmvariance module<a class="headerlink" href="#module-mcglm.mcglmvariance" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.mcglmvariance.MCGLMVariance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.mcglmvariance.</span></span><span class="sig-name descname"><span class="pre">MCGLMVariance</span></span><a class="reference internal" href="_modules/mcglm/mcglmvariance.html#MCGLMVariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmvariance.MCGLMVariance" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcglm.mcglmcattr.MCGLMCAttributes" title="mcglm.mcglmcattr.MCGLMCAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMCAttributes</span></code></a></p>
+<p>The MCGLMVariance class handles the second optimization of the MCGLM second-moment assumptions, therefore, the step for variance. It implements every step of Variance within the scope of the MCGLM algorithm, using many attributes to be specified as attributes. A general class must inherit this MCGLMVariance and leverages its methods properly. MCGLM is in charge of setting the fundamental python attributes and modules orchestration for a complete mcglm adjustment.</p>
+<p>The variance step on the optimization sketch boils down to Pearson estimating equations and the chaser algorithm for optimization. The latter uses tuning to set the step size of each iteration.</p>
+<p>Heavy operations regarding C components, pivotal to the chaser optimization step, are implemented on the MCGLMAttricutes class, inherited here. The method _c_complete, the one that crafts all of the three attributes thoroughly, is comprehensive for the variance calculation in this class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglmvariance.MCGLMVariance.generate_sensitivity">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_sensitivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_intermediate_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmvariance.html#MCGLMVariance.generate_sensitivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmvariance.MCGLMVariance.generate_sensitivity" title="Link to this definition"></a></dt>
+<dd><p>The method to create the sensitivity matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c_intermediate_components</strong> (<em>array_type</em>) – Intermediate components of C matrix.</p></li>
+<li><p><strong>W</strong> (<em>array_type</em>) – A weight matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>array_type</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A sensitivity matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.mcglmvariance.MCGLMVariance.update_covariates">
+<span class="sig-name descname"><span class="pre">update_covariates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmvariance.html#MCGLMVariance.update_covariates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mcglmvariance.MCGLMVariance.update_covariates" title="Link to this definition"></a></dt>
+<dd><p>The method update_covariates implements a cycle of iteration for the second-moment estimation, the variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu_attributes</strong> (<em>dict</em>) – A dict with mean and derivatives.</p></li>
+<li><p><strong>rho</strong> (<em>array_type</em>) – Parameters of correlation.</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – A parameter for Power Tweedie distribution.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameters.</p></li>
+<li><p><strong>W</strong> (<em>array_type</em>) – A weight matrix.</p></li>
+<li><p><strong>dispersion</strong> (<em>array-type</em>) – A vector with dispersion parameters.</p></li>
+<li><p><strong>mu</strong> (<em>array_type</em>) – A vector with mean parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple with new vector of dispersion vector, atributes of matrix C, sensitivity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mcglm.utils">
+<span id="mcglm-utils-module"></span><h2>mcglm.utils module<a class="headerlink" href="#module-mcglm.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.utils.diagonal">
+<span class="sig-prename descclassname"><span class="pre">mcglm.utils.</span></span><span class="sig-name descname"><span class="pre">diagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/utils.html#diagonal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.utils.diagonal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.utils.mc_matrix_linear_predictor">
+<span class="sig-prename descclassname"><span class="pre">mcglm.utils.</span></span><span class="sig-name descname"><span class="pre">mc_matrix_linear_predictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/utils.html#mc_matrix_linear_predictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.utils.mc_matrix_linear_predictor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.utils.mc_sandwich">
+<span class="sig-prename descclassname"><span class="pre">mcglm.utils.</span></span><span class="sig-name descname"><span class="pre">mc_sandwich</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">central_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/utils.html#mc_sandwich"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.utils.mc_sandwich" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.utils.mc_sandwich_csr">
+<span class="sig-prename descclassname"><span class="pre">mcglm.utils.</span></span><span class="sig-name descname"><span class="pre">mc_sandwich_csr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">central_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/utils.html#mc_sandwich_csr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.utils.mc_sandwich_csr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.utils.mc_sandwich_power">
+<span class="sig-prename descclassname"><span class="pre">mcglm.utils.</span></span><span class="sig-name descname"><span class="pre">mc_sandwich_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">central_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/utils.html#mc_sandwich_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.utils.mc_sandwich_power" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.utils.mc_sandwich_power_csr">
+<span class="sig-prename descclassname"><span class="pre">mcglm.utils.</span></span><span class="sig-name descname"><span class="pre">mc_sandwich_power_csr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">central_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/utils.html#mc_sandwich_power_csr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.utils.mc_sandwich_power_csr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mcglm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mcglm" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.MCGLM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntrial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tuning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLM" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcglm.mcglmmean.MCGLMMean" title="mcglm.mcglmmean.MCGLMMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMMean</span></code></a>, <a class="reference internal" href="#mcglm.mcglmvariance.MCGLMVariance" title="mcglm.mcglmvariance.MCGLMVariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMVariance</span></code></a></p>
+<p>MCGLM class that implements MCGLM stastical models. (Bonat, Jørgensen 2015)</p>
+<p>It extends GLM for multi-responses and dependent components by fitting second-moment assumptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endog</strong> (<em>array_like</em>) – 1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list.</p></li>
+<li><p><strong>exog</strong> (<em>array_like</em>) – A dataset with the endogenous matrix in a Numpy fashion. Since the library doesn’t set an intercept by default, the user must add it. In the case of multiple responses, the user must pass the design matrices as a python list.</p></li>
+<li><p><strong>z</strong> (<em>array_like</em>) – List with matrices components of the linear covariance matrix.</p></li>
+<li><p><strong>link</strong> (<em>array_like</em><em>, </em><em>string</em><em> or </em><em>None</em>) – Specification for the link function. The MCGLM library implements the following options: identity, logit, power, log, probit, cauchy, cloglog, loglog, negativebinomial. In the case of None, the library chooses the identity link. In multiple responses, user must pass values as list.</p></li>
+<li><p><strong>variance</strong> (<em>array_like</em><em>, </em><em>string</em><em> or </em><em>None</em>) – Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.</p></li>
+<li><p><strong>offset</strong> (<em>array_like</em><em> or </em><em>None</em>) – Offset for continuous or count. In multiple responses, user must pass values as list.</p></li>
+<li><p><strong>ntrial</strong> (<em>array_like</em><em> or </em><em>None</em>) – The parameter ntrial is key for binomial responses. In multiple responses, the user must pass values as a list.</p></li>
+<li><p><strong>power_fixed</strong> (<em>array_like</em><em> or </em><em>None</em>) – The parameter power is key for Tweedie-like distributions, as it defines the overall behavior of the model. The library mcglm can also estimate the power parameter if power_fixed equals True. Therefore, in the case of variance functions, either tweedie, geom_tweedie, or poisson_tweedie. In multiple responses, the user must pass values as a list.</p></li>
+<li><p><strong>maxiter</strong> (<em>float</em><em> or </em><em>None</em>) – The parameter maxiter defines the total maximum possible cycles of iterations for the optimization process. Defaults to 200.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em> or </em><em>None</em>) – The parameter tol defines the minimum absolute change on parameters to run another optimization cycle. If the absolute updating value is lower than tol, the optimization process stops. Defaults to 0.0001.</p></li>
+<li><p><strong>tuning</strong> (<em>float</em><em> or </em><em>None</em>) – The optimization process leverages two second-order algorithms for the estimation process. The parameter tuning is an additional component guiding the step size of the process, acting closely to the second-order derivatives. Defaults to 0.5.</p></li>
+<li><p><strong>weights</strong> (<em>array_like</em><em> or </em><em>None</em>) – The parameter weights allows one to specificy sample weights.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">scotland</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">exog</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exog</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">GLM</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">endog</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">exog</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="p">[</span><span class="n">mc_id</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">exog</span><span class="p">)],</span>
+<span class="gp">... </span>                     <span class="n">link</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="s2">&quot;tweedie&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                     <span class="n">power</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">power_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">mu</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">pearson_residuals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">aic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">bic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_results</span><span class="o">.</span><span class="n">loglikelihood</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>MCGLM is a brand new model, which provides a solid statistical model for fitting multi-responses non-gaussian, dependent, or independent data based on second-moment assumptions. When a user instantiates an mcglm object, she must specify attributes such as link, variance, and z matrices; it will drive the overall behavior of the model.
+For more details, check articles and documentation provided.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.MCGLM.df_model">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_model</span></span><a class="headerlink" href="#mcglm.MCGLM.df_model" title="Link to this definition"></a></dt>
+<dd><p>Calculates the degree of freedom for the model.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mcglm.MCGLM.df_resid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_resid</span></span><a class="headerlink" href="#mcglm.MCGLM.df_resid" title="Link to this definition"></a></dt>
+<dd><p>Calculates the degree of freedom for the model residuals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLM.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglm.html#MCGLM.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLM.fit" title="Link to this definition"></a></dt>
+<dd><p>The interface to run the inference for MCGLM statistical model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.MCGLMCAttributes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLMCAttributes</span></span><a class="reference internal" href="_modules/mcglm/mcglmcattr.html#MCGLMCAttributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMCAttributes" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The class “MCGLMCAttributes” has the sake of calculating every C operations, used on throughout adjustments of mean and variance. This class has two interfaces, “c_inverse” and “c_complete”; one for each of two adjustment steps of MCGLM.</p>
+<p>The interface “c_inverse” crafts only inverse C, and the “c_complete” adds its derivatives and other features onto response. A Quasi-likelihood estimation needs only the inverse of “C” matrix. Therefore c_inverse saves computational resources by avoiding unnecessary operations on mean step adjustment.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLMCAttributes.c_complete">
+<span class="sig-name descname"><span class="pre">c_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmcattr.html#MCGLMCAttributes.c_complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMCAttributes.c_complete" title="Link to this definition"></a></dt>
+<dd><p>A method to generate the whole list of C components, explicitly made for the variance treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>array_like</em>) – A vetor with mean parameters.</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – Power parameter.</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Correlation parameter.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple with every component of C.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLMCAttributes.c_inverse">
+<span class="sig-name descname"><span class="pre">c_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmcattr.html#MCGLMCAttributes.c_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMCAttributes.c_inverse" title="Link to this definition"></a></dt>
+<dd><p>A method to generate only the inverse of the C matrix, explicitly made for the mean treatment step. This method interacts with sigma and omega amenities by list of each parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>array_like</em>) – A vetor with mean parameters.</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – Power parameter.</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Correlation parameter.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>array_like or tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The inverse of C matrix and its components.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.MCGLMMean">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLMMean</span></span><a class="reference internal" href="_modules/mcglm/mcglmmean.html#MCGLMMean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMMean" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcglm.mcglmcattr.MCGLMCAttributes" title="mcglm.mcglmcattr.MCGLMCAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMCAttributes</span></code></a></p>
+<p>MCGLMMean is the class for the first moment adjustment within MCGLM inference. It handles lifecycle completely, ranging from mu and derivatives to quasi-likelihood calculations.
+This class has two interfaces: ‘calculate_mean_features’ which calculates mu attributes, and ‘update_beta’ that applies quasi-likelihood estimation and retrieves a new beta.
+This class implements the Estimating Equation Quasi-score (Wedderburn, 1974) and the second-order optimization algorithm (Jennrich, 1969) and(Widyaningsih et al., 2017).</p>
+<p class="rubric">References</p>
+<p>Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized linear models, and the Gauss—Newton method. Biometrika, 61(3):439–447.</p>
+<p>Jennrich, R. I. (1969). A Newton-Raphson algorithm for maximum likelihood factor analysis. Psychometrika, 34.</p>
+<p>Widyaningsih, P., Saputro, D. e Putri, A. (2017). Fisher scoring method for parameter estimation of geographically weighted ordinal logistic regression (gwolr) model. Journal of Physics: Conference Series, 855:012060.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLMMean.calculate_mean_features">
+<span class="sig-name descname"><span class="pre">calculate_mean_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmmean.html#MCGLMMean.calculate_mean_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMMean.calculate_mean_features" title="Link to this definition"></a></dt>
+<dd><p>Base method to calculate every attribute related to the mean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>link</strong> (<em>str</em>) – Link function.</p></li>
+<li><p><strong>beta</strong> (<em>array-like</em>) – Regression Parameters.</p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Matrix with covariates.</p></li>
+<li><p><strong>offset</strong> (<em>int</em><em>, </em><em>optional</em><em>)</em>) – Offset add value. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mean attributes, the raw mean and its derivatives.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLMMean.update_beta">
+<span class="sig-name descname"><span class="pre">update_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmmean.html#MCGLMMean.update_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMMean.update_beta" title="Link to this definition"></a></dt>
+<dd><p>The method update_beta takes the current beta, leverages the quasi-likelihood estimator to calculate the next regression parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>array-like</em>) – Regression Parameters.</p></li>
+<li><p><strong>W</strong> (<em>array-like</em>) – Weight matrix</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – Power parameter</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – Correlation parameters</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple with the new regression parameters, the quasi-score parameter, sensitivity and the variability matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mcglm.MCGLMVariance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">MCGLMVariance</span></span><a class="reference internal" href="_modules/mcglm/mcglmvariance.html#MCGLMVariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMVariance" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcglm.mcglmcattr.MCGLMCAttributes" title="mcglm.mcglmcattr.MCGLMCAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCGLMCAttributes</span></code></a></p>
+<p>The MCGLMVariance class handles the second optimization of the MCGLM second-moment assumptions, therefore, the step for variance. It implements every step of Variance within the scope of the MCGLM algorithm, using many attributes to be specified as attributes. A general class must inherit this MCGLMVariance and leverages its methods properly. MCGLM is in charge of setting the fundamental python attributes and modules orchestration for a complete mcglm adjustment.</p>
+<p>The variance step on the optimization sketch boils down to Pearson estimating equations and the chaser algorithm for optimization. The latter uses tuning to set the step size of each iteration.</p>
+<p>Heavy operations regarding C components, pivotal to the chaser optimization step, are implemented on the MCGLMAttricutes class, inherited here. The method _c_complete, the one that crafts all of the three attributes thoroughly, is comprehensive for the variance calculation in this class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLMVariance.generate_sensitivity">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_sensitivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_intermediate_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmvariance.html#MCGLMVariance.generate_sensitivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMVariance.generate_sensitivity" title="Link to this definition"></a></dt>
+<dd><p>The method to create the sensitivity matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c_intermediate_components</strong> (<em>array_type</em>) – Intermediate components of C matrix.</p></li>
+<li><p><strong>W</strong> (<em>array_type</em>) – A weight matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>array_type</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A sensitivity matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mcglm.MCGLMVariance.update_covariates">
+<span class="sig-name descname"><span class="pre">update_covariates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/mcglmvariance.html#MCGLMVariance.update_covariates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.MCGLMVariance.update_covariates" title="Link to this definition"></a></dt>
+<dd><p>The method update_covariates implements a cycle of iteration for the second-moment estimation, the variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu_attributes</strong> (<em>dict</em>) – A dict with mean and derivatives.</p></li>
+<li><p><strong>rho</strong> (<em>array_type</em>) – Parameters of correlation.</p></li>
+<li><p><strong>power</strong> (<em>float</em>) – A parameter for Power Tweedie distribution.</p></li>
+<li><p><strong>tau</strong> (<em>float</em>) – Dispersion parameters.</p></li>
+<li><p><strong>W</strong> (<em>array_type</em>) – A weight matrix.</p></li>
+<li><p><strong>dispersion</strong> (<em>array-type</em>) – A vector with dispersion parameters.</p></li>
+<li><p><strong>mu</strong> (<em>array_type</em>) – A vector with mean parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple with new vector of dispersion vector, atributes of matrix C, sensitivity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.mc_id">
+<span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">mc_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/dependencies.html#mc_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mc_id" title="Link to this definition"></a></dt>
+<dd><p>mc_id method retrieves a numpy diagonal matrix with data length of the original matrix</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.mc_ma">
+<span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">mc_ma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/dependencies.html#mc_ma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mc_ma" title="Link to this definition"></a></dt>
+<dd><p>mc_ma method retrieves the Z components for matrix linear predictor associated with Autoregressive models(Feller, W. (1957). An introduction to probability theory and its applications / William Feller.
+Wiley New York, 2nd ed. edition.).</p>
+<p>To ilustrate, in a three-row example, a MA(1) produce the following dependence matrix:</p>
+<p>[[0, 1, 0],
+[1, 0, 1],
+[0, 1, 0]]</p>
+<p>A MA(2) would produce:</p>
+<p>[[0, 0, 1],
+[0, 0, 0],
+[1, 0, 0]]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mcglm.mc_mixed">
+<span class="sig-prename descclassname"><span class="pre">mcglm.</span></span><span class="sig-name descname"><span class="pre">mc_mixed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mcglm/dependencies.html#mc_mixed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mcglm.mc_mixed" title="Link to this definition"></a></dt>
+<dd><p>mc_mixed retrieves the components for matrix linear predictor associated with mixed models(Demidenko E (2013). Mixed Models: Theory and Applications with R. John Wiley &amp; Sons. doi:10.1002/0471728438.).</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="mcglm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jean Carlos Faoot Maia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

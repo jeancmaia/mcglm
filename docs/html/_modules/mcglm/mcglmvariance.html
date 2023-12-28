@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mcglm.mcglmvariance &mdash; mcglm 0.2.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=6ffd866b"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            mcglm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">mcglm</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">mcglm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mcglm.mcglmvariance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mcglm.mcglmvariance</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>
+<span class="kn">from</span> <span class="nn">.mcglmcattr</span> <span class="kn">import</span> <span class="n">MCGLMCAttributes</span>
+
+
+<div class="viewcode-block" id="MCGLMVariance">
+<a class="viewcode-back" href="../../mcglm.html#mcglm.mcglmvariance.MCGLMVariance">[docs]</a>
+<span class="k">class</span> <span class="nc">MCGLMVariance</span><span class="p">(</span><span class="n">MCGLMCAttributes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The MCGLMVariance class handles the second optimization of the MCGLM second-moment assumptions, therefore, the step for variance. It implements every step of Variance within the scope of the MCGLM algorithm, using many attributes to be specified as attributes. A general class must inherit this MCGLMVariance and leverages its methods properly. MCGLM is in charge of setting the fundamental python attributes and modules orchestration for a complete mcglm adjustment.</span>
+
+<span class="sd">    The variance step on the optimization sketch boils down to Pearson estimating equations and the chaser algorithm for optimization. The latter uses tuning to set the step size of each iteration.</span>
+
+<span class="sd">    Heavy operations regarding C components, pivotal to the chaser optimization step, are implemented on the MCGLMAttricutes class, inherited here. The method _c_complete, the one that crafts all of the three attributes thoroughly, is comprehensive for the variance calculation in this class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MCGLMCAttributes</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MCGLMVariance.update_covariates">
+<a class="viewcode-back" href="../../mcglm.html#mcglm.mcglmvariance.MCGLMVariance.update_covariates">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_covariates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_attributes</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method update_covariates implements a cycle of iteration for the second-moment estimation, the variance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            mu_attributes : dict</span>
+<span class="sd">                A dict with mean and derivatives.</span>
+<span class="sd">            rho : array_type</span>
+<span class="sd">                Parameters of correlation.</span>
+<span class="sd">            power : float</span>
+<span class="sd">                A parameter for Power Tweedie distribution.</span>
+<span class="sd">            tau : float</span>
+<span class="sd">                Dispersion parameters.</span>
+<span class="sd">            W : array_type</span>
+<span class="sd">                A weight matrix.</span>
+<span class="sd">            dispersion : array-type</span>
+<span class="sd">                A vector with dispersion parameters.</span>
+<span class="sd">            mu : array_type</span>
+<span class="sd">                A vector with mean parameters.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            tuple: A tuple with new vector of dispersion vector, atributes of matrix C, sensitivity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c_inverse</span><span class="p">,</span> <span class="n">c_derivative</span><span class="p">,</span> <span class="n">c_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_complete</span><span class="p">(</span>
+            <span class="n">mu_attributes</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">tau</span>
+        <span class="p">)</span>
+        <span class="p">(</span>
+            <span class="n">pearson_score</span><span class="p">,</span>
+            <span class="n">sensitivity</span><span class="p">,</span>
+            <span class="n">c_intermediate_components</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pearson_estimating_equation</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">c_inverse</span><span class="p">,</span> <span class="n">c_derivative</span><span class="p">)</span>
+
+        <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chaser_step</span><span class="p">(</span><span class="n">pearson_score</span><span class="p">,</span> <span class="n">sensitivity</span><span class="p">)</span>
+        <span class="n">new_covariates</span> <span class="o">=</span> <span class="n">dispersion</span> <span class="o">-</span> <span class="n">step</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">new_covariates</span><span class="p">,</span>
+            <span class="n">c_inverse</span><span class="p">,</span>
+            <span class="n">c_values</span><span class="p">,</span>
+            <span class="n">c_intermediate_components</span><span class="p">,</span>
+            <span class="n">sensitivity</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__chaser_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">sensitivity</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The protected method chaser step calculates the step for a optimization step.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            score : array_type</span>
+<span class="sd">                A vector with quasi-score values.</span>
+<span class="sd">            sensitivity : array_type</span>
+<span class="sd">                The sensitivity matrix.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            array_type: The absolute change to operate on vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tuning</span> <span class="o">*</span> <span class="n">solve</span><span class="p">(</span><span class="n">sensitivity</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__pearson_estimating_equation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">c_inverse</span><span class="p">,</span> <span class="n">c_derivative</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The estimating equation for the dispersion parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            mu : array_type</span>
+<span class="sd">                A vetor with mean parameters</span>
+<span class="sd">            W : array_type</span>
+<span class="sd">                A weight matrix</span>
+<span class="sd">            c_inverse : array_type</span>
+<span class="sd">                The inverse of C Matrix</span>
+<span class="sd">            c_derivative : array_type</span>
+<span class="sd">                The derivatives of C Matrix</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            tuple : a tuple with score, sensitivity matrix and the matrix C normalized by Pearson.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">residue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_values</span> <span class="o">-</span> <span class="n">mu</span>
+
+        <span class="n">c_pearson</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_inverse</span><span class="p">,</span> <span class="n">d_c</span><span class="p">)</span> <span class="k">for</span> <span class="n">d_c</span> <span class="ow">in</span> <span class="n">c_derivative</span><span class="p">]</span>
+
+        <span class="n">pearson_score</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__core_pearson</span><span class="p">(</span><span class="n">matrix_component</span><span class="p">,</span> <span class="n">c_inverse</span><span class="p">,</span> <span class="n">residue</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">matrix_component</span> <span class="ow">in</span> <span class="n">c_pearson</span>
+        <span class="p">]</span>
+        <span class="n">sensitivity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_sensitivity</span><span class="p">(</span><span class="n">c_pearson</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">pearson_score</span><span class="p">,</span> <span class="n">sensitivity</span><span class="p">,</span> <span class="n">c_pearson</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__core_pearson</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c_component</span><span class="p">,</span> <span class="n">c_inverse</span><span class="p">,</span> <span class="n">residue</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The protected method core_pearson handles the inner-components of Pearson estimation equations operations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            c_component : array_type</span>
+<span class="sd">                A matrix with components of C.</span>
+<span class="sd">            c_inverse : array_type</span>
+<span class="sd">                The inverse of matrix C.</span>
+<span class="sd">            residue : array_type</span>
+<span class="sd">                The difference between mean and an outcome variable.</span>
+<span class="sd">            W : array_type</span>
+<span class="sd">                A weight matrix.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            array_type : A matrix with the core pearson.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">weighted_c_components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_component</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+        <span class="n">sum_diagonal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">weighted_c_components</span><span class="p">))</span>
+        <span class="n">residue_inv_C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_inverse</span><span class="p">,</span> <span class="n">residue</span><span class="p">)</span>
+
+        <span class="n">core_pearson</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">residue</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span> <span class="n">weighted_c_components</span><span class="p">),</span> <span class="n">residue_inv_C</span><span class="p">),</span>
+            <span class="n">sum_diagonal</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">core_pearson</span>
+
+<div class="viewcode-block" id="MCGLMVariance.generate_sensitivity">
+<a class="viewcode-back" href="../../mcglm.html#mcglm.mcglmvariance.MCGLMVariance.generate_sensitivity">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_sensitivity</span><span class="p">(</span><span class="n">c_intermediate_components</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The method to create the sensitivity matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            c_intermediate_components : array_type</span>
+<span class="sd">                Intermediate components of C matrix.</span>
+<span class="sd">            W : array_type</span>
+<span class="sd">                A weight matrix.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            array_type : A sensitivity matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+        <span class="k">for</span> <span class="n">position_row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c_intermediate_components</span><span class="p">)):</span>
+            <span class="n">transpose_matrix_position</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">c_intermediate_components</span><span class="p">[</span><span class="n">position_row</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">transpose_matrix_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">transpose_matrix_position</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">position_col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c_intermediate_components</span><span class="p">)):</span>
+                <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">sensitivity</span><span class="p">,</span>
+                    <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span>
+                            <span class="n">transpose_matrix_position</span><span class="p">,</span>
+                            <span class="n">c_intermediate_components</span><span class="p">[</span><span class="n">position_col</span><span class="p">],</span>
+                        <span class="p">)</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+        <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">sensitivity</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">c_intermediate_components</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">c_intermediate_components</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sensitivity</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jean Carlos Faoot Maia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

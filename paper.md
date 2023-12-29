@@ -30,7 +30,7 @@ bibliography: paper.bib
 The `mcglm` library, a newly introduced Python tool, facilitates statistical 
 analyses using Multivariate Covariance Generalized Linear Models (McGLM). This 
 contemporary family of models universalizes the traditional Generalized Linear 
-Models(GLM), empowering them to handle multivariate and non-independent response 
+Models (GLM), empowering them to handle multivariate and non-independent response 
 variables. Due to its flexibility and explicit specification, McGLM supports a 
 lot of statistical analyses across different kinds of data and distinct traits; in 
 this article, we promote `mcglm`.
@@ -213,7 +213,7 @@ and loglikelihood for model comparison.
 Moreover, library `mcglm` provides methods to assist in specifying the 
 matrix linear predictor through dependence matrices Z. There are three 
 available methods: mc_id(), which crafts a matrix for independent 
-realizations of outcome; mc_mixed (), which builds matrices for mixed 
+realizations of outcome; mc_mixed(), which builds matrices for mixed 
 models, and mc_ma() that build matrices for moving average fitting, 
 popular models in time series analysis. The package `mcglm` of R 
 language implements similar methods to aid in the matrix linear 

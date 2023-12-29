@@ -18,14 +18,23 @@ from .utils import (
 
 class MCGLMCAttributes:
     """
-    The class "MCGLMCAttributes" has the sake of calculating every C operations, used on throughout adjustments of mean and variance. This class has two interfaces, "c_inverse" and "c_complete"; one for each of two adjustment steps of MCGLM.
+    The class "MCGLMCAttributes" has the sake of calculating every C 
+    operations, used on throughout adjustments of mean and variance. This 
+    class has two interfaces, "c_inverse" and "c_complete"; one for each of 
+    two adjustment steps of MCGLM.
 
-    The interface "c_inverse" crafts only inverse C, and the "c_complete" adds its derivatives and other features onto response. A Quasi-likelihood estimation needs only the inverse of "C" matrix. Therefore c_inverse saves computational resources by avoiding unnecessary operations on mean step adjustment.
+    The interface "c_inverse" crafts only inverse C, and the "c_complete" adds 
+    its derivatives and other features onto response. A Quasi-likelihood 
+    estimation needs only the inverse of "C" matrix. Therefore c_inverse saves 
+    computational resources by avoiding unnecessary operations on mean step 
+    adjustment.
     """
 
     def c_inverse(self, mu, power, rho, tau, full_response=False):
         """
-        A method to generate only the inverse of the C matrix, explicitly made for the mean treatment step. This method interacts with sigma and omega amenities by list of each parameter.
+        A method to generate only the inverse of the C matrix, explicitly made 
+        for the mean treatment step. This method interacts with sigma and 
+        omega amenities by list of each parameter.
 
         Parameters
         ----------
@@ -46,7 +55,9 @@ class MCGLMCAttributes:
 
     def c_complete(self, mu, power, rho, tau):
         """
-        A method to generate the whole list of C components, explicitly made for the variance treatment step. This method interacts with sigma and omega crafting practices, passing the list of each parameter.
+        A method to generate the whole list of C components, explicitly made 
+        for the variance treatment step. This method interacts with sigma and 
+        omega crafting practices, passing the list of each parameter.
 
         Parameters
         ----------
@@ -100,8 +111,16 @@ class MCGLMCAttributes:
         return c_inverse, c_derivatives, c_values
 
     def __generate_c_inverse(self, mu, power, rho, tau, full_response=False):
-        """This method generates and retrieves the inverse of the C matrix, which is a pivotal component of the quasi-score calculation. Notwithstanding the mentioned, this method crafts many important artifacts throughout the time as omega, sigma, sigma Cholesky, the inverse of Cholesky sigma, sigma among responses, sigma block diagonal matrix alongside its inverse.
-        Owing to the previously mentioned worthy artifacts crafted by the method, it can retrieve either only the c inverse matrix or all artifacts. The former is helpful for the method _c_inverse, whereas the former is for _c_complete.
+        """This method generates and retrieves the inverse of the C matrix, 
+        which is a pivotal component of the quasi-score calculation. 
+        Notwithstanding the mentioned, this method crafts many important 
+        artifacts throughout the time as omega, sigma, sigma Cholesky, the 
+        inverse of Cholesky sigma, sigma among responses, sigma block diagonal 
+        matrix alongside its inverse.
+        Owing to the previously mentioned worthy artifacts crafted by the 
+        method, it can retrieve either only the c inverse matrix or all 
+        artifacts. The former is helpful for the method _c_inverse, whereas 
+        the former is for _c_complete.
 
         Parameters
         ----------
@@ -215,7 +234,8 @@ class MCGLMCAttributes:
             sigma_chol_block_matrix : array_like
                 A block diagonal matrix with all Sigmas.
             sigma_chol_block_matrix_transpose : array_like
-                The transpose matrix of a block diagonal matrix with all Sigmas.
+                The transpose matrix of a block diagonal matrix with all 
+                Sigmas.
             sigma_between_derivative : array_like
                 The deriviatives between sigmas.
             diagonal_matrix : array_like
@@ -313,7 +333,8 @@ class MCGLMCAttributes:
             diagonal_matrix : array_like
                 A diagonal matrix.
             sigma_chol_block_matrix_transpose : array_like
-                The transpose matrix of a block diagonal matrix with all Sigmas.
+                The transpose matrix of a block diagonal matrix with all 
+                Sigmas.
             sigma_chol_block_matrix : array_like
                 A block diagonal matrix with all Sigmas.
         Returns
@@ -338,7 +359,8 @@ class MCGLMCAttributes:
         sigma_chol_block_matrix_transpose,
         core_matrix,
     ):
-        """Base method to calculate derivatives related to correlation parameters.
+        """Base method to calculate derivatives related to correlation 
+        parameters.
 
         Parameters
         ----------
@@ -347,7 +369,8 @@ class MCGLMCAttributes:
             sigma_chol_block_matrix : array_like
                 A block diagonal matrix with all Sigmas.
             sigma_chol_block_matrix_transpose : array_like
-                The transpose matrix of a block diagonal matrix with all Sigmas.
+                The transpose matrix of a block diagonal matrix with all 
+                Sigmas.
             core_matrix : array_like
                 A diagonal matrix.
         Returns
@@ -377,7 +400,8 @@ class MCGLMCAttributes:
         ]
 
     def _generate_omega(self, tau):
-        """Base method to calculate derivatives related to correlation parameters.
+        """Base method to calculate derivatives related to correlation 
+        parameters.
 
         Parameters
         ----------
@@ -385,7 +409,8 @@ class MCGLMCAttributes:
                 List with dispersion parameters
         Returns
         -------
-            list : the results of matrix linear sum between tau and dependence matrices.
+            list : the results of matrix linear sum between tau and dependence 
+            matrices.
         """
         omega = []
         for target in range(self._n_targets):
@@ -400,7 +425,8 @@ class MCGLMCAttributes:
         sigma_between,
         diagonal_matrix,
     ):
-        """Base method to calculate derivatives related to correlation parameters.
+        """Base method to calculate derivatives related to correlation 
+        parameters.
 
         Parameters
         ----------
@@ -502,8 +528,12 @@ class MCGLMCAttributes:
         self, mu, power, variance, z, power_fixed, Ntrial, omegas, covariance="identity"
     ):
         """
-        Base method for computing variance-covariance matrix, based on variance function and omega matrix. This method will implement for cases where covariance is equal to identity, and variance falls in the list:
-        ['constant', 'tweedie', 'binomialP', 'binomialPQ', 'power', 'geom_tweedie', 'poisson_tweedie']
+        Base method for computing variance-covariance matrix, based on 
+        variance function and omega matrix. This method will implement for 
+        cases where covariance is equal to identity, and variance falls in the 
+        list:
+        ['constant', 'tweedie', 'binomialP', 'binomialPQ', 'power', 
+        'geom_tweedie', 'poisson_tweedie']
 
         Parameters
         ----------
@@ -603,7 +633,8 @@ class MCGLMCAttributes:
 
         """sigma between method computes between for sequence calculations.
 
-        It responds out with 2-position-tuple with sigma between and its derivative.
+        It responds out with 2-position-tuple with sigma between and its 
+        derivative.
         """
         if n_resp == 1:
             return (1, 1)

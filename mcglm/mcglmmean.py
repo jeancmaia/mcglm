@@ -34,17 +34,28 @@ AVAILABLE_LINK_FUNCTIONS = {
 
 class MCGLMMean(MCGLMCAttributes):
     """
-    MCGLMMean is the class for the first moment adjustment within MCGLM inference. It handles lifecycle completely, ranging from mu and derivatives to quasi-likelihood calculations.
-    This class has two interfaces: 'calculate_mean_features' which calculates mu attributes, and 'update_beta' that applies quasi-likelihood estimation and retrieves a new beta.
-    This class implements the Estimating Equation Quasi-score (Wedderburn, 1974) and the second-order optimization algorithm (Jennrich, 1969) and(Widyaningsih et al., 2017).
+    MCGLMMean is the class for the first moment adjustment within MCGLM 
+    inference. It handles lifecycle completely, ranging from mu and 
+    derivatives to quasi-likelihood calculations.
+    This class has two interfaces: 'calculate_mean_features' which calculates 
+    mu attributes, and 'update_beta' that applies quasi-likelihood estimation 
+    and retrieves a new beta.
+    This class implements the Estimating Equation Quasi-score (Wedderburn, 
+    1974) and the second-order optimization algorithm (Jennrich, 1969) and
+    (Widyaningsih et al., 2017).
 
     References
     ----------
-    Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized linear models, and the Gauss—Newton method. Biometrika, 61(3):439–447.
+    Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized 
+    linear models, and the Gauss—Newton method. Biometrika, 61(3):439–447.
 
-    Jennrich, R. I. (1969). A Newton-Raphson algorithm for maximum likelihood factor analysis. Psychometrika, 34.
+    Jennrich, R. I. (1969). A Newton-Raphson algorithm for maximum likelihood 
+    factor analysis. Psychometrika, 34.
 
-    Widyaningsih, P., Saputro, D. e Putri, A. (2017). Fisher scoring method for parameter estimation of geographically weighted ordinal logistic regression (gwolr) model. Journal of Physics: Conference Series, 855:012060.
+    Widyaningsih, P., Saputro, D. e Putri, A. (2017). Fisher scoring method 
+    for parameter estimation of geographically weighted ordinal logistic 
+    regression (gwolr) model. Journal of Physics: Conference Series, 
+    855:012060.
     """
 
     def __init__(self):
@@ -59,7 +70,8 @@ class MCGLMMean(MCGLMCAttributes):
                 A link function
         Returns
         -------
-            statsmodels.genmod.families.links : a corresponding object for the link function.
+            statsmodels.genmod.families.links : a corresponding object for the 
+            link function.
         """
         assert link in AVAILABLE_LINK_FUNCTIONS, (
             f"The link function " + str(link) + " isn't available"
@@ -67,7 +79,8 @@ class MCGLMMean(MCGLMCAttributes):
         return AVAILABLE_LINK_FUNCTIONS.get(link.lower())
 
     def __linear_predictor(self, X, beta):
-        """Method linear predictor applies linear operation between covariates and the regression parameters.
+        """Method linear predictor applies linear operation between covariates 
+        and the regression parameters.
 
         Parameters
         ----------
@@ -105,7 +118,8 @@ class MCGLMMean(MCGLMCAttributes):
     def __link_function_attributes(
         self, link: str, beta: np.array, X: np.array, offset: int = 0
     ):
-        """The method __link_function_attributes calculates the vector of expected values and its derivatives. It returns data as dictionary
+        """The method __link_function_attributes calculates the vector of 
+        expected values and its derivatives. It returns data as dictionary
 
         Parameters
         ----------
@@ -164,7 +178,8 @@ class MCGLMMean(MCGLMCAttributes):
         return mu_attributes_per_response, mu, d
 
     def update_beta(self, beta, W, power, rho, tau):
-        """The method update_beta takes the current beta, leverages the quasi-likelihood estimator to calculate the next regression parameters.
+        """The method update_beta takes the current beta, leverages the 
+        quasi-likelihood estimator to calculate the next regression parameters.
 
         Parameters
         ----------
@@ -180,7 +195,8 @@ class MCGLMMean(MCGLMCAttributes):
                 Dispersion parameters.
         Returns
         -------
-            tuple : A tuple with the new regression parameters, the quasi-score parameter, sensitivity and the variability matrix.
+            tuple : A tuple with the new regression parameters, the 
+            quasi-score parameter, sensitivity and the variability matrix.
         """
         mu_attributes, mu, derivative_mu = self.calculate_mean_features(
             self._link, beta, self._X, self._offset
@@ -195,7 +211,8 @@ class MCGLMMean(MCGLMCAttributes):
         return new_beta, score, sensitivity, variability
 
     def __update_fisher_score(self, sensitivity, score, beta):
-        """A private method that implements the second-order optimization algorithm Fisher-scoring.
+        """A private method that implements the second-order optimization 
+        algorithm Fisher-scoring.
 
         Parameters
         ----------
@@ -222,7 +239,9 @@ class MCGLMMean(MCGLMCAttributes):
         return new_beta
 
     def __quasi_score(self, mu_derivative, c_inverse, y, mu, W):
-        """Quasi-score functions are estimating equations for the Maximum Likelihood Estimator (Wedderburn, 1974). This method harnesses the Numpy backbone to produce a classic method of statistical models.
+        """Quasi-score functions are estimating equations for the Maximum 
+        Likelihood Estimator (Wedderburn, 1974). This method harnesses the 
+        Numpy backbone to produce a classic method of statistical models.
 
         Parameters
         ----------

@@ -32,9 +32,8 @@ analyses using Multivariate Covariance Generalized Linear Models (McGLM). This
 contemporary family of models universalizes the traditional Generalized Linear 
 Models(GLM), empowering them to handle multivariate and non-independent response 
 variables. Due to its flexibility and explicit specification, McGLM supports a 
-lot of statistical analyses across different kinds of data and distinct traits. 
-In this article, we promote `mcglm` as a comprehensive framework for statistical 
-analysis in Python. 
+lot of statistical analyses across different kinds of data and distinct traits; in 
+this article, we promote `mcglm`.
 
 The `mcglm` library provides a comprehensive platform for data analysis using 
 the McGLM framework. Built upon the established standards of the `statsmodels` 

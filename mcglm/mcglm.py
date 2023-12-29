@@ -21,32 +21,58 @@ class MCGLM(MCGLMMean, MCGLMVariance):
     __doc__ = """
     MCGLM class that implements MCGLM stastical models. (Bonat, Jørgensen 2015)
         
-    It extends GLM for multi-responses and dependent components by fitting second-moment assumptions.
+    It extends GLM for multi-responses and dependent components by fitting 
+    second-moment assumptions.
 
     Parameters
     ----------
     endog : array_like
-        1d array of endogenous response variable. In case of multiple responses, the user must pass the responses on a list.  
+        1d array of endogenous response variable. In case of multiple 
+        responses, the user must pass the responses on a list.  
     exog : array_like
-        A dataset with the endogenous matrix in a Numpy fashion. Since the library doesn't set an intercept by default, the user must add it. In the case of multiple responses, the user must pass the design matrices as a python list. 
+        A dataset with the endogenous matrix in a Numpy fashion. Since the 
+        library doesn't set an intercept by default, the user must add it. In 
+        the case of multiple responses, the user must pass the design matrices 
+        as a python list. 
     z : array_like
         List with matrices components of the linear covariance matrix.
     link : array_like, string or None
-        Specification for the link function. The MCGLM library implements the following options: identity, logit, power, log, probit, cauchy, cloglog, loglog, negativebinomial. In the case of None, the library chooses the identity link. In multiple responses, user must pass values as list.  
+        Specification for the link function. The MCGLM library implements the 
+        following options: identity, logit, power, log, probit, cauchy, 
+        cloglog, loglog, negativebinomial. In the case of None, the library 
+        chooses the identity link. In multiple responses, user must pass 
+        values as list.  
     variance : array_like, string or None
-        Specification for the variance function. The MCGLM library implements the following options: constant, tweedie, binomialP, binomialPQ, geom_tweedie, poisson_tweedie. In the case of None, the library chooses the constant link. In multiple responses, user must pass values as list.   
+        Specification for the variance function. The MCGLM library implements 
+        the following options: constant, tweedie, binomialP, binomialPQ, 
+        geom_tweedie, poisson_tweedie. In the case of None, the library 
+        chooses the constant link. In multiple responses, user must pass 
+        values as list.   
     offset : array_like or None
-        Offset for continuous or count. In multiple responses, user must pass values as list.   
+        Offset for continuous or count. In multiple responses, user must pass 
+        values as list.   
     ntrial : array_like or None
-        The parameter ntrial is key for binomial responses. In multiple responses, the user must pass values as a list.
+        The parameter ntrial is key for binomial responses. In multiple 
+        responses, the user must pass values as a list.
     power_fixed : array_like or None
-        The parameter power is key for Tweedie-like distributions, as it defines the overall behavior of the model. The library mcglm can also estimate the power parameter if power_fixed equals True. Therefore, in the case of variance functions, either tweedie, geom_tweedie, or poisson_tweedie. In multiple responses, the user must pass values as a list.
+        The parameter power is key for Tweedie-like distributions, as it 
+        defines the overall behavior of the model. The library mcglm can also 
+        estimate the power parameter if power_fixed equals True. Therefore, in 
+        the case of variance functions, either tweedie, geom_tweedie, or 
+        poisson_tweedie. In multiple responses, the user must pass values as a 
+        list.
     maxiter : float or None
-        The parameter maxiter defines the total maximum possible cycles of iterations for the optimization process. Defaults to 200.
+        The parameter maxiter defines the total maximum possible cycles of 
+        iterations for the optimization process. Defaults to 200.
     tol : float or None
-        The parameter tol defines the minimum absolute change on parameters to run another optimization cycle. If the absolute updating value is lower than tol, the optimization process stops. Defaults to 0.0001.
+        The parameter tol defines the minimum absolute change on parameters to 
+        run another optimization cycle. If the absolute updating value is 
+        lower than tol, the optimization process stops. Defaults to 0.0001.
     tuning : float or None
-        The optimization process leverages two second-order algorithms for the estimation process. The parameter tuning is an additional component guiding the step size of the process, acting closely to the second-order derivatives. Defaults to 0.5.
+        The optimization process leverages two second-order algorithms for the 
+        estimation process. The parameter tuning is an additional component 
+        guiding the step size of the process, acting closely to the 
+        second-order derivatives. Defaults to 0.5.
     weights : array_like or None
         The parameter weights allows one to specificy sample weights.
         
@@ -69,7 +95,11 @@ class MCGLM(MCGLMMean, MCGLMVariance):
     
     Notes
     -----
-    MCGLM is a brand new model, which provides a solid statistical model for fitting multi-responses non-gaussian, dependent, or independent data based on second-moment assumptions. When a user instantiates an mcglm object, she must specify attributes such as link, variance, and z matrices; it will drive the overall behavior of the model.
+    MCGLM is a brand new model, which provides a solid statistical model for 
+    fitting multi-responses non-gaussian, dependent, or independent data based 
+    on second-moment assumptions. When a user instantiates an mcglm object, 
+    she must specify attributes such as link, variance, and z matrices; it 
+    will drive the overall behavior of the model.
     For more details, check articles and documentation provided.
     """
 
@@ -145,7 +175,9 @@ class MCGLM(MCGLMMean, MCGLMVariance):
     def __calculate_static_attributes(
         self, endog, exog, link, variance, z, offset, power, power_fixed, ntrial
     ):
-        """Base method to warm up the pivotal artifacts for model training. It fulfills the None with default values, sets the power value, and creates the base vectors.
+        """Base method to warm up the pivotal artifacts for model training. It
+        fulfills the None with default values, sets the power value, and
+        creates the base vectors.
 
         Args:
             endog (list or np.array): _description_
@@ -261,15 +293,14 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             power_fixed_list,
             power_list,
         )
-        
+
     def _reformat_dataset(self, dataset):
         if isinstance(dataset, np.ndarray):
             if len(dataset.shape) == 1:
                 return pd.Series(dataset)
             else:
-                return pd.DataFrame(dataset)    
+                return pd.DataFrame(dataset)
         return dataset
-
 
     def fit(self):
         """The interface to run the inference for MCGLM statistical model."""
@@ -360,11 +391,12 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         pseudo Bayesian Information criterion
         """
         return round(
-            degrees_of_freedom * np.log(length_endogenous) - 2 * pseudo_loglike, 2
+            (degrees_of_freedom * np.log(length_endogenous) - 2 * pseudo_loglike), 2
         )
 
     def _fit(self):
-        """This method implements the core inference for MCGLM, by all the means of the two-moment assumptions."""
+        """This method implements the core inference for MCGLM, by all the
+        means of the two-moment assumptions."""
         W = (
             np.diag(np.ones(len(self._y_values)))
             if self._weights is None
@@ -508,7 +540,7 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
         if self._n_targets == 1:
             if self._power_fixed[0]:
-                return new_regression, new_dispersion, rho, power, [new_dispersion]
+                return (new_regression, new_dispersion, rho, power, [new_dispersion])
             else:
                 return (
                     new_regression,
@@ -561,10 +593,13 @@ class MCGLM(MCGLMMean, MCGLMVariance):
         return covariance
 
     def __update_optimal_dispersion(self):
-        """Update optimal dispersion method calculates optimal values for regression parameters and the dispersion. It harnesses the GLM API of statsmodels for calculating those values."""
+        """Update optimal dispersion method calculates optimal values for
+        regression parameters and the dispersion. It harnesses the GLM API of
+        statsmodels for calculating those values."""
 
         def logit_est(endog, exog, offset):
-            """For the Logit link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+            """For the Logit link function, the method adjusts a GLM with
+            Binomial family. It retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -575,11 +610,13 @@ class MCGLM(MCGLMMean, MCGLMVariance):
                 tuple: regression parameters, dispersion parameter.
             """
             mdl = GLM(endog, exog, family=sm.families.Binomial(), offset=offset)
+
             mdl_results = mdl.fit()
             return mdl_results.params.values, mdl_results.scale
 
         def loglog_est(endog, exog, offset):
-            """For the LogLog link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+            """For the LogLog link function, the method adjusts a GLM with
+            Binomial family. It retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -594,7 +631,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def cloglog_est(endog, exog, offset):
-            """For the CLogLog link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+            """For the CLogLog link function, the method adjusts a GLM with
+            Binomial family. It retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -611,7 +649,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def cauchy_est(endog, exog, offset):
-            """For the Cauchy link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+            """For the Cauchy link function, the method adjusts a GLM with
+            Binomial family. It retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -626,7 +665,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def probit_est(endog, exog, offset):
-            """For the Cauchy link function, the method adjusts a GLM with Binomial family. It retrieves the parameters specified.
+            """For the Cauchy link function, the method adjusts a GLM with
+            Binomial family. It retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -641,7 +681,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def identity_est(endog, exog, offset=None):
-            """For the Identity link function, the method adjusts a OLS. It retrieves the parameters specified.
+            """For the Identity link function, the method adjusts a OLS. It
+            retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -656,7 +697,8 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params, mdl_results.scale
 
         def log_est(endog, exog, offset):
-            """For the Log link function, the method adjusts a GLM with Tweedie(power=1) family. It retrieves the parameters specified.
+            """For the Log link function, the method adjusts a GLM with
+            Tweedie(power=1) family. It retrieves the parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -673,7 +715,9 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params, mdl_results.scale
 
         def power_est(endog, exog, offset):
-            """For either the Power or Reciprocal link function, the method adjusts a GLM with Tweedie(power=2) family. It retrieves the parameters specified.
+            """For either the Power or Reciprocal link function, the method
+            adjusts a GLM with Tweedie(power=2) family. It retrieves the
+            parameters specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -690,7 +734,9 @@ class MCGLM(MCGLMMean, MCGLMVariance):
             return mdl_results.params.values, mdl_results.scale
 
         def negative_binomial_est(endog, exog, offset):
-            """For the Negative Binomial link function, the method adjusts a GLM with Tweedie(power=2) family. It retrieves the parameters specified.
+            """For the Negative Binomial link function, the method adjusts a
+            GLM with Tweedie(power=2) family. It retrieves the parameters
+            specified.
 
             Args:
                 endog (array-like): outcome variable.
@@ -735,7 +781,12 @@ class MCGLM(MCGLMMean, MCGLMVariance):
 
 
 class MCGLMParameters:
-    """According to MCGLM specification, grounded for frequentist inference traits, the estimation of resulting parameters converge asymptotically to a gaussian distribution with tuple mean-variance = (actual parameters, inverse of matrix Godambe). This property allows the calculation of pivotal traits regarding the parameters, such as: hypothesis testing and confidence interval.
+    """According to MCGLM specification, grounded for frequentist inference
+    traits, the estimation of resulting parameters converge asymptotically to
+    a gaussian distribution with tuple mean-variance = (actual parameters,
+    inverse of matrix Godambe). This property allows the calculation of
+    pivotal traits regarding the parameters, such as: hypothesis testing and
+    confidence interval.
 
     This class implements every method related to this trait.
     """
@@ -753,7 +804,12 @@ class MCGLMParameters:
         c_deriv,
         var_sensi,
     ):
-        """The parameters of MCGLM converge assymtoptically to a Normal Distribution. This trait allows some statistical inferences as hypothesis testing, confidence interval and so on. This method crafts three important matrices: Varcov: variance covariance matrix, joint_inv_sensitivity: inverse sensitivity, and joint_variability: the joint variability distribution."""
+        """The parameters of MCGLM converge assymtoptically to a Normal
+        Distribution. This trait allows some statistical inferences as
+        hypothesis testing, confidence interval and so on. This method crafts
+        three important matrices: Varcov: variance covariance matrix,
+        joint_inv_sensitivity: inverse sensitivity, and joint_variability: the
+        joint variability distribution."""
 
         variance_variability = MCGLMParameters.generate_var_variability(
             resid, W, c_inv, c, c_deriv
@@ -864,7 +920,10 @@ class MCGLMParameters:
 
 
 class MCGLMResults(GLMResults):
-    """MCGLM Class for generating and manipulating results of mcglm training. The main output goes by the method summary(), the classical statsmodels output. Therefore, the user can access the attributes "aic", "bic" e loglikelihood.
+    """MCGLM Class for generating and manipulating results of mcglm training.
+    The main output goes by the method summary(), the classical statsmodels
+    output. Therefore, the user can access the attributes "aic", "bic" e
+    loglikelihood.
 
     Args:
         GLMResults: Class of statsmodels library for presenting results of GLM.
@@ -1156,7 +1215,9 @@ class MCGLMResults(GLMResults):
 
     def summary(self, yname=None, xname=None, title=None, alpha=0.05):
         """
-        It generates the summary report as the sketch of classical "statsmodels" library. The summary shows all parameters found thoroughly, for each response.
+        It generates the summary report as the sketch of classical
+        "statsmodels" library. The summary shows all parameters found
+        thoroughly, for each response.
         """
         self._dispersion_vcov = []
         self.betas_vcov = []

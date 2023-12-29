@@ -6,22 +6,22 @@ from .mcglmcattr import MCGLMCAttributes
 
 class MCGLMVariance(MCGLMCAttributes):
     """
-    The MCGLMVariance class handles the second optimization of the MCGLM 
-    second-moment assumptions, therefore, the step for variance. It implements 
-    every step of Variance within the scope of the MCGLM algorithm, using many 
-    attributes to be specified as attributes. A general class must inherit 
-    this MCGLMVariance and leverages its methods properly. MCGLM is in charge 
-    of setting the fundamental python attributes and modules orchestration for 
+    The MCGLMVariance class handles the second optimization of the MCGLM
+    second-moment assumptions, therefore, the step for variance. It implements
+    every step of Variance within the scope of the MCGLM algorithm, using many
+    attributes to be specified as attributes. A general class must inherit
+    this MCGLMVariance and leverages its methods properly. MCGLM is in charge
+    of setting the fundamental python attributes and modules orchestration for
     a complete mcglm adjustment.
 
-    The variance step on the optimization sketch boils down to Pearson 
-    estimating equations and the chaser algorithm for optimization. The latter 
+    The variance step on the optimization sketch boils down to Pearson
+    estimating equations and the chaser algorithm for optimization. The latter
     uses tuning to set the step size of each iteration.
 
-    Heavy operations regarding C components, pivotal to the chaser 
-    optimization step, are implemented on the MCGLMAttricutes class, inherited 
-    here. The method _c_complete, the one that crafts all of the three 
-    attributes thoroughly, is comprehensive for the variance calculation in 
+    Heavy operations regarding C components, pivotal to the chaser
+    optimization step, are implemented on the MCGLMAttricutes class, inherited
+    here. The method _c_complete, the one that crafts all of the three
+    attributes thoroughly, is comprehensive for the variance calculation in
     this class.
     """
 
@@ -29,7 +29,7 @@ class MCGLMVariance(MCGLMCAttributes):
         super(MCGLMCAttributes, self).__init__()
 
     def update_covariates(self, mu_attributes, rho, power, tau, W, dispersion, mu):
-        """The method update_covariates implements a cycle of iteration for 
+        """The method update_covariates implements a cycle of iteration for
         the second-moment estimation, the variance.
 
         Parameters
@@ -50,7 +50,7 @@ class MCGLMVariance(MCGLMCAttributes):
                 A vector with mean parameters.
         Returns
         -------
-            tuple: A tuple with new vector of dispersion vector, atributes of 
+            tuple: A tuple with new vector of dispersion vector, atributes of
             matrix C, sensitivity.
         """
         c_inverse, c_derivative, c_values = self.c_complete(
@@ -74,7 +74,7 @@ class MCGLMVariance(MCGLMCAttributes):
         )
 
     def __chaser_step(self, score, sensitivity):
-        """The protected method chaser step calculates the step for a 
+        """The protected method chaser step calculates the step for a
         optimization step.
 
         Parameters
@@ -104,7 +104,7 @@ class MCGLMVariance(MCGLMCAttributes):
                 The derivatives of C Matrix
         Returns
         -------
-            tuple : a tuple with score, sensitivity matrix and the matrix C 
+            tuple : a tuple with score, sensitivity matrix and the matrix C
             normalized by Pearson.
         """
         residue = self._y_values - mu
@@ -119,7 +119,7 @@ class MCGLMVariance(MCGLMCAttributes):
         return (pearson_score, sensitivity, c_pearson)
 
     def __core_pearson(self, c_component, c_inverse, residue, W):
-        """The protected method core_pearson handles the inner-components of 
+        """The protected method core_pearson handles the inner-components of
         Pearson estimation equations operations.
 
         Parameters

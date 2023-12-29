@@ -12,7 +12,7 @@ from itertools import combinations
 
 def mc_id(data=None):
     """
-    mc_id method retrieves a numpy diagonal matrix with data length of the 
+    mc_id method retrieves a numpy diagonal matrix with data length of the
     original matrix
     """
     size = data.shape[0]
@@ -21,12 +21,12 @@ def mc_id(data=None):
 
 def mc_ma(id=None, time=None, data=None, order=1):
     """
-    mc_ma method retrieves the Z components for matrix linear predictor 
-    associated with Autoregressive models(Feller, W. (1957). An introduction 
+    mc_ma method retrieves the Z components for matrix linear predictor
+    associated with Autoregressive models(Feller, W. (1957). An introduction
     to probability theory and its applications / William Feller.
     Wiley New York, 2nd ed. edition.).
 
-    To ilustrate, in a three-row example, a MA(1) produce the following 
+    To ilustrate, in a three-row example, a MA(1) produce the following
     dependence matrix:
 
     [[0, 1, 0],
@@ -75,8 +75,8 @@ def mc_ma(id=None, time=None, data=None, order=1):
 
 def mc_mixed(data=None, formula=None):
     """
-    mc_mixed retrieves the components for matrix linear predictor associated 
-    with mixed models(Demidenko E (2013). Mixed Models: Theory and 
+    mc_mixed retrieves the components for matrix linear predictor associated
+    with mixed models(Demidenko E (2013). Mixed Models: Theory and
     Applications with R. John Wiley & Sons. doi:10.1002/0471728438.).
     """
     design_matrix = dmatrix(formula, data=data, return_type="dataframe")

@@ -102,9 +102,9 @@ Those libraries distinguish from `statsmodels` on their Bayesian paradigm
 of specifying models. The library `mcglm` specifies the McGLM in a frequentist 
 fashion.
 
-The library `mcglm` provides an easy interface for fitting McGLMs on the 
+The library `mcglm` provides an easy interface for fitting McGLM on the 
 standards of the `statsmodels` [@Seabold:2010] library. It provides a 
-comprehensive framework for statistical analysis supported by McGLMs, 
+comprehensive framework for statistical analysis supported by McGLM, 
 with tools to lead its model specification, fitting, and appropriate report 
 to assess estimates.
 
@@ -120,7 +120,7 @@ including the usual formula notation popular in many statistical
 software. In alignment with the GLM framework, the link function 
 encompasses usual choices like logit and probit for binary and 
 binomial data, log for count data, and identity for continuous 
-accurate data. The variance function is fundamental to the McGLMs, 
+accurate data. The variance function is fundamental to the McGLM, 
 as it is related to the marginal distribution of the response 
 variable. Noteworthy among common choices is the power of the 
 variance function, which is specialized for handling continuous 
@@ -160,10 +160,10 @@ inverse, and exponential-matrix.
 ![UML for the library \label{fig:umlcode}](artifacts/classes.png)
 
 The library `mcglm` provides the first Python tool for statistical 
-analysis with the aid of McGLMs. Heavily influenced by its twin R 
+analysis with the aid of McGLM. Heavily influenced by its twin R 
 version [@Bonat:2018], the library has ninety-one percent of 
 unit-testing coverage. URLs of source-code and PyPI, the official 
-repository for Python libraries, are [https://github.com/jeancmaia/mcglm 
+repository for Python libraries, are [https://github.com/jeancmaia/mcglm] 
 (https://github.com/jeancmaia/mcglm) and [https://pypi.org/project/mcglm/]
 (https://pypi.org/project/mcglm/). The library `mcglm` can easily be installed 
 using the library `pip.`

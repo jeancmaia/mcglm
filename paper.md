@@ -165,7 +165,7 @@ version [@Bonat:2018], the library has ninety-one percent of
 unit-testing coverage. URLs of source-code and PyPI, the official 
 repository for Python libraries, are 
 [https://github.com/jeancmaia/mcglm](https://github.com/jeancmaia/mcglm) 
-and [https://pypi.org/project/mcglm/](https://pypi.org/project/mcglm/). 
+and [https://pypi.org/project/mcglm](https://pypi.org/project/mcglm). 
 The library mcglm can easily be installed using the library `pip`.
 
 The `mcglm` library is based on popular libraries of scientific Python 

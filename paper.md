@@ -93,7 +93,7 @@ statistical analysis in Python with the aid of McGLM.
 
 The McGLM framework is available for R users through the open-source package 
 `mcglm` [@Bonat:2016b]; nevertheless, the language Python did not have a 
-standard library until the library `mcglm`. The foremost library statistical 
+standard library until the library `mcglm`. The foremost library for statistical 
 analysis in Python is the `statsmodels` [@Seabold:2010]. It implements 
 classical statistical models, such as GLM, GAM, GEE, and Copulas. Many other 
 libraries stand out for probabilistic programming in Python [@probabilisticp:2018], 
@@ -163,23 +163,22 @@ The library `mcglm` provides the first Python tool for statistical
 analysis with the aid of McGLM. Heavily influenced by its twin R 
 version [@Bonat:2018], the library has ninety-one percent of 
 unit-testing coverage. URLs of source-code and PyPI, the official 
-repository for Python libraries, are [https://github.com/jeancmaia/mcglm] 
-(https://github.com/jeancmaia/mcglm) and [https://pypi.org/project/mcglm/]
-(https://pypi.org/project/mcglm/). The library `mcglm` can easily be installed 
-using the library `pip.`
+repository for Python libraries, are 
+[https://github.com/jeancmaia/mcglm](https://github.com/jeancmaia/mcglm) 
+and [https://pypi.org/project/mcglm/](https://pypi.org/project/mcglm/). 
+The library mcglm can easily be installed using the library pip.
 
 The `mcglm` library is based on popular libraries of scientific Python 
-programming: The `NumPy` [@harris2020array], `scipy` [@2020SciPy-NMeth], 
-and `scipy.sparse`. We inherit `statsmodels`'s interface and deliver a 
-code library akin to their standards API. Object-oriented programming 
-is another cornerstone for the library `mcglm`; the SOLID principles 
-[@Madasu:2015] helped to create a readable and extensible code base. The 
-UML diagram \autoref{fig:umlcode} presents the `mcglm` library architecture.
+programming: `NumPy` [@harris2020array] and `scipy` [@2020SciPy-NMeth]. 
+We inherit `statsmodels`'s interface and deliver a code library akin 
+to their standards API. Object-oriented programming is another 
+cornerstone for the library `mcglm`; the SOLID principles [@Madasu:2015] 
+helped to create a readable and extensible code base. The UML diagram 
+\autoref{fig:umlcode} presents the `mcglm` library architecture.
 
 The implementation `mcglm` lies in six classes: `MCGLM`, `MCGLMMean`, 
 `MCGLMVariance`, `MCGLMCAttributes`, `MCGLMParameters` and `MCGLMResults`. 
-Each class has its scope and responsibilities. For in-depth details, access 
-the code-base [https://github.com/jeancmaia/mcglm](https://github.com/jeancmaia/mcglm).
+Each class has its scope and responsibilities.For in-depth details, access our documentation at [https://mcglm.readthedocs.io](https://mcglm.readthedocs.io).
 
 We adopted the `statsmodels` standards of attribute names; the endog argument 
 is a vector, or a matrix, with the realizations of the response variable; the 
@@ -220,33 +219,5 @@ language implements similar methods to aid in the matrix linear
 predictor specification. For in-depth details about those matrices, 
 see @Bonat:2016.
 
-The library can be installed in any Python environment that fulfills 
-the requirements listed on PyPI Webpage. 
-
-# Discussion
-
-This article introduces the implementation of the McGLM framework in Python, 
-providing a flexible statistical modeling approach for fitting a wide range 
-of models. The `mcglm` library extends the `statsmodels` library and offers 
-an accessible interface for accessing estimated parameters and goodness-of-fit 
-measures.
-
-As a new alternative for statistical analysis in Python, the `mcglm` 
-library is poised for integration into the `statsmodels` library as a 
-new API. Despite the limited assortment for covariance link function, the 
-plurality of candidates for the other components enables many models listed 
-in the statistical literature. Regarding software engineering, the library's 
-object-oriented development philosophy provides a readable, extensible, 
-self-contained, and testable implementation ideal for developing statistical 
-models.
-
-One significant difference between the `mcglm` library and existing R 
-language packs is object-oriented development, suitable for statistical model 
-production. While mixed models and copulas are similar statistical tools, the 
-`mcglm` library's ability to analyze multiple responses sets it apart. We 
-suggest conducting a comparative analysis of statistical tools and exploring 
-different model specifications in the future. Integrating complementary models 
-within `statsmodels` further solidifies Python's position as a conducive environment 
-for conducting such analyses.
 
 # References

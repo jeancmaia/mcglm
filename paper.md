@@ -178,7 +178,8 @@ helped to create a readable and extensible code base. The UML diagram
 
 The implementation `mcglm` lies in six classes: `MCGLM`, `MCGLMMean`, 
 `MCGLMVariance`, `MCGLMCAttributes`, `MCGLMParameters` and `MCGLMResults`. 
-Each class has its scope and responsibilities. For in-depth details, access our documentation at [https://mcglm.readthedocs.io](https://mcglm.readthedocs.io).
+Each class has its scope and responsibilities. For in-depth details, access our 
+documentation at [https://mcglm.readthedocs.io](https://mcglm.readthedocs.io).
 
 We adopted the `statsmodels` standards of attribute names; the endog argument 
 is a vector, or a matrix, with the realizations of the response variable; the 

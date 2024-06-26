@@ -166,19 +166,19 @@ unit-testing coverage. URLs of source-code and PyPI, the official
 repository for Python libraries, are 
 [https://github.com/jeancmaia/mcglm](https://github.com/jeancmaia/mcglm) 
 and [https://pypi.org/project/mcglm/](https://pypi.org/project/mcglm/). 
-The library mcglm can easily be installed using the library pip.
+The library mcglm can easily be installed using the library `pip`.
 
 The `mcglm` library is based on popular libraries of scientific Python 
-programming: `NumPy` [@harris2020array] and `scipy` [@2020SciPy-NMeth]. 
+programming: `NumPy` [@harris2020array] and `SciPy` [@2020SciPy-NMeth]. 
 We inherit `statsmodels`'s interface and deliver a code library akin 
 to their standards API. Object-oriented programming is another 
-cornerstone for the library `mcglm`; the SOLID principles [@Madasu:2015] 
+cornerstone for the library `mcglm`; the SOLID principles [@10.3844/jcssp.2021.624.638] 
 helped to create a readable and extensible code base. The UML diagram 
 \autoref{fig:umlcode} presents the `mcglm` library architecture.
 
 The implementation `mcglm` lies in six classes: `MCGLM`, `MCGLMMean`, 
 `MCGLMVariance`, `MCGLMCAttributes`, `MCGLMParameters` and `MCGLMResults`. 
-Each class has its scope and responsibilities.For in-depth details, access our documentation at [https://mcglm.readthedocs.io](https://mcglm.readthedocs.io).
+Each class has its scope and responsibilities. For in-depth details, access our documentation at [https://mcglm.readthedocs.io](https://mcglm.readthedocs.io).
 
 We adopted the `statsmodels` standards of attribute names; the endog argument 
 is a vector, or a matrix, with the realizations of the response variable; the 

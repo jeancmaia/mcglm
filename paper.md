@@ -53,12 +53,12 @@ manager, such as `pip`.
 
 Dated at the beginning of the 19th century and controversial about the actual 
 authorship, the least squares method established an optimization algorithm 
-[@10.1214/aos/1176345451]. According to the Gauss-Markov theorem [@Gauss-Marc], 
+[@10.1214/1176345451]. According to the Gauss-Markov theorem [@Gauss-Marc], 
 the resulting estimates are optimal and unbiased under linear conditions. 
 This optimization method forms the basis of linear regression, one of the 
 earliest statistical models [@galton:1886; @linearregression:1982]. Linear 
 regression associates a response variable to a group of covariates by 
-employing a linear operation on regression coefficients [@10.2307/2333849]. 
+employing a linear operation on regression coefficients [@gauss:2022]. 
 Three main assumptions for linear regression are linearity, independent 
 realizations of the response variable, and a Gaussian homoscedastic error 
 with a zero mean. While standing the test of time, linear regression has 
@@ -137,7 +137,6 @@ functions:
 
 \begin{table}[h]
 \centering
-\label{tab:methods}
 \begin{tabular}{ll} \hline
 Function name            & Formula  \\ \hline
 \texttt{Tweedie/Power}  & $\mathrm{V}(.;p) = \mu^{p}$\\
@@ -172,7 +171,7 @@ The `mcglm` library is based on popular libraries of scientific Python
 programming: `NumPy` [@harris2020array] and `SciPy` [@2020SciPy-NMeth]. 
 We inherit `statsmodels`'s interface and deliver a code library akin 
 to their standards API. Object-oriented programming is another 
-cornerstone for the library `mcglm`; the SOLID principles [@10.3844/jcssp.2021.624.638] 
+cornerstone for the library `mcglm`; the SOLID principles [@solid:2021] 
 helped to create a readable and extensible code base. The UML diagram 
 \autoref{fig:umlcode} presents the `mcglm` library architecture.
 
